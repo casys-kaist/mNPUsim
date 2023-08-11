@@ -86,7 +86,21 @@ void conv_non_fold_parallel_computation()
 							next_ofmap_vector.push_back((uint64_t)-1);
 					}
 				}
+
+				if(is_full())
+				{
+					tile_output();
+					cout << "tile(ineff_conv): " << ++full_num << endl;
+				}
+
+				//move: next_(filter|ifmap)_set -> dram_(filter|ifmap)_set + reset: next_(filter|ifmap)_set
+				move_reset_dram();
+				move_reset_sram();
 			}
+
 		}
 	}
+
+	tile_output();
+	cout << "tile(ineff_conv): " << ++full_num << endl;
 }
