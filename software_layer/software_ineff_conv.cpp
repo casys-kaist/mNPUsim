@@ -30,6 +30,41 @@ void conv_non_fold_parallel_computation()
 					else if(SRAM_TRACE)
 						next_filter_vector.push_back((uint64_t)-1);
 				}
+
+				// find ifmap element
+				for(int systolic_y=0;systolic_y<systolic_height;systolic_y++)
+				{
+					int ifmap_index = local_ifmap_fold * systolic_height + systolic_y;
+					int systolic_y_ifmap_base_x = MIN(ifmap_index % ifmap_iter_width * stride, ifmap_width-filter_width);
+					int systolic_y_ifmap_base_y = MIN(ifmap_index / ifmap_iter_width * stride, ifmap_height-filter_height);
+					uint64_t systolic_y_ifmap_base = ifmap_base_addr + systolic_y_ifmap_base_y * ifmap_width * element_unit + systolic_y_ifmap_base_x * element_unit;
+					int offset = local_cycle-systolic_y;
+
+					if(ifmap_index < ifmap_iter_width * ifmap_iter_height && offset >= 0 && offset<filter_size)
+					{
+						int tuned_offset = 0;
+						while(offset >= filter_width)
+						{
+							if(offset >= filter_size_one_channel)
+							{
+								tuned_offset += ifmap_size_one_channel;
+								offset -= filter_size_one_channel;
+							}
+							else
+							{
+								tuned_offset += ifmap_width;
+								offset -= filter_width;
+							}
+						}
+						tuned_offset += offset;
+
+						next_ifmap_set.insert((systolic_y_ifmap_base+tuned_offset * element_unit) / cacheline_size * cacheline_size);
+						if(SRAM_TRACE)
+							next_ifmap_vector.push_back(systolic_y_ifmap_base + tuned_offset * element_unit);
+					}
+					else if(SRAM_TRACE)
+						next_ifmap_vector.push_back((uint64_t)-1);
+				}
 			}
 		}
 	}
