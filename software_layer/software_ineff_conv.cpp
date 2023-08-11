@@ -1,16 +1,27 @@
+#include "../util.h"
+#include "../accelerator.h"
 //--------------------------------------------------
 // name: software_request_generator::conv_non_fold_parallel_computation
+// usage: non-continuous systolic array input. (seperate point: fold)
+// (ineff): following L1 tile is non-continuous (is not realstic (very ineff) in real-hardware)
 //--------------------------------------------------
 // Dataflow: os-stationary
 
 void conv_non_fold_parallel_computation()
 {
+	// *_fold: folding caused by SPM-size
+	// local_*_fold: folding caused by systolic array-size
+
+	// inner for-loop: filter_fold --> filter_fold first
 	for(int local_ifmap_fold=0;local_ifmap_fold<ifmap_fold;local_ifmap_fold++)
 	{
+		// ifmap_iter_(width|height): # of repeat of window conv operation in width-side or height-side
+		// live_*: number of * in this local_*_fold
 		int live_ifmap = MIN(ifmap_iter_width * ifmap_iter_height - systolic_height * local_ifmap_fold, systolic_height);
 		for(int local_filter_fold=0;local_filter_fold<filter_fold;local_filter_fold++)
 		{
 			int live_filter = MIN(filter_num-systolic_width * local_filter_fold, systolic_width);
+			// filter size cycles are required for each column/row (i.e idle cycle is added to filter_size)
 			int cycle_in_this_fold = filter_size + 2*(MIN(live_filter, live_ifmap) - 1);
 
 			for(int local_cycle=0; local_cycle<cycle_in_this_fold; local_cycle++)
