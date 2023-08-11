@@ -65,6 +65,27 @@ void conv_non_fold_parallel_computation()
 					else if(SRAM_TRACE)
 						next_ifmap_vector.push_back((uint64_t)-1);
 				}
+
+				// find ofmap element
+				for(int systolic_x=0;systolic_x<systolic_width;systolic_x++)
+				{
+					for(int systolic_y=0;systolic_y<systolic_height;systolic_y++)
+					{
+						int filter_index = local_filter_fold*systolic_width+systolic_x;
+						int ofmap_one_channel_size = ifmap_iter_width * ifmap_iter_height;
+						int ifmap_index = local_ifmap_fold * systolic_height + systolic_y;
+						uint64_t ofmap_addr = ofmap_base_addr + (filter_index * ofmap_one_channel_size + ifmap_index) * element_unit;
+						int offset = local_cycle-systolic_x-systolic_y;
+						if(offset >= 0 && offset < filter_size)
+						{
+							next_ofmap_set.insert(ofmap_addr / cacheline_size * cacheline_size);
+							if(SRAM_TRACE)
+								next_ofmap_vector.push_back(ofmap_addr);
+						}
+						else if(SRAM_TRACE)
+							next_ofmap_vector.push_back((uint64_t)-1);
+					}
+				}
 			}
 		}
 	}
