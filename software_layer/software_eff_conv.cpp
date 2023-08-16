@@ -101,6 +101,33 @@ void software_request_generator::conv_fold_parallel_computation()
 			else if(SRAM_TRACE)
 				next_ifmap_vector.push_back((uint64_t)-1);
 		}
+
+		//find ofmap element
+		for(int x=0;x<systolic_width;x++)
+		{
+			for(int y=0;y<systolic_height;y++)
+			{
+
+				int filter_index = local_filter_fold[x][y]*systolic_width+x;
+				int ofmap_one_channel_size = ifmap_iter_width * ifmap_iter_height;
+				int ifmap_index = local_ifmap_fold[x][y] * systolic_height + y;
+				uint64_t ofmap_addr = ofmap_base_addr + (filter_index * ofmap_one_channel_size + ifmap_index) * element_unit;
+
+				if(filter_index<filter_num && ifmap_index<ifmap_iter_width*ifmap_iter_height && offset[x][y]>=0)
+				{
+					active_pe++;
+					next_ofmap_set.insert(ofmap_addr/cacheline_size*cacheline_size);
+					if(SRAM_TRACE)
+						next_ofmap_vector.push_back(ofmap_addr);
+				}
+				else
+				{
+					if(SRAM_TRACE)
+						next_ofmap_vector.push_back((uint64_t)-1);
+					idle_pe++;
+				}
+			}
+		}
 	}
 
 
