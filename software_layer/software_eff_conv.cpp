@@ -128,6 +128,27 @@ void software_request_generator::conv_fold_parallel_computation()
 				}
 			}
 		}
+
+		//next_step
+		for(int x=0;x<systolic_width;x++)
+		{
+			for(int y=0;y<systolic_height;y++)
+			{
+				offset[x][y]++;
+				if(offset[x][y]==filter_size)
+				{
+					offset[x][y]=0;
+					local_filter_fold[x][y]++;
+					if(local_filter_fold[x][y]==filter_fold)
+					{
+						local_filter_fold[x][y]=0;
+						local_ifmap_fold[x][y]++;
+					}
+				}
+			}
+		}
+		if(!SRAM_TRACE)
+			pre_local_cycle+=unit_compute;
 	}
 
 
