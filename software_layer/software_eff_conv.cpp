@@ -1,5 +1,10 @@
+#include "../util.h"
+#include "../accelerator.h"
+
 //--------------------------------------------------
 // name: software_request_generator::conv_fold_parallel_computation
+// usage: core conv operations with continous systolic array input.
+// (eff): the L1 tile is always continuous
 //--------------------------------------------------
 void software_request_generator::conv_fold_parallel_computation()
 {
