@@ -39,6 +39,34 @@ void software_request_generator::conv_fold_parallel_computation()
 
 		if(is_fin)
 			break;
+
+		// find filter element
+		for(int x=0;x<systolic_width;x++)
+		{
+			int filter_index = local_filter_fold[x][0] * systolic_width + x;
+
+			//according ifmap
+			bool is_according_ifmap=false;
+			for(int according_x=0;according_x<MIN(x+1, systolic_height);according_x++)
+			{
+				int according_ifmap_index = local_ifmap_fold[according_x][x-according_x] * systolic_height + according_x;
+				if(according_ifmap_index < ifmap_iter_width * ifmap_iter_height && offset[according_x][x-according_x]>=0)
+				{
+					is_according_ifmap=true;
+					break;
+				}
+			}
+
+			if(filter_index<filter_num && offset[x][0]>=0 && is_according_ifmap)
+			{
+				uint64_t systolic_x_filter_base = filter_base_addr + filter_index*filter_size*element_unit;
+					next_filter_set.insert((systolic_x_filter_base + offset[x][0]*element_unit)/cacheline_size*cacheline_size);
+				if(SRAM_TRACE)
+					next_filter_vector.push_back(systolic_x_filter_base + offset[x][0]*element_unit);
+			}
+			else if(SRAM_TRACE)
+				next_filter_vector.push_back((uint64_t)-1);
+		}
 	}
 
 
