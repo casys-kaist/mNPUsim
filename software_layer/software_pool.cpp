@@ -1,5 +1,9 @@
+#include "../util.h"
+#include "../accelerator.h"
+
 //--------------------------------------------------
 // name: software_request_generator::pool_computation()
+// usage: pooling operations
 //--------------------------------------------------
 void software_request_generator::pool_computation()
 {
@@ -24,7 +28,19 @@ void software_request_generator::pool_computation()
 
 					}
 				}
+
+				if(is_full())
+				{
+					tile_output();
+					cout << "tile(pooling): " << ++full_num << endl;
+				}
+
+				move_reset_dram();
+				move_reset_sram();
 			}
 		}
 	}
+
+	tile_output();
+	cout << "tile(pooling): " << ++full_num << endl;
 }
