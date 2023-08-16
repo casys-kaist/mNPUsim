@@ -67,6 +67,40 @@ void software_request_generator::conv_fold_parallel_computation()
 			else if(SRAM_TRACE)
 				next_filter_vector.push_back((uint64_t)-1);
 		}
+
+		//find ifmap element
+		for(int y=0;y<systolic_height;y++)
+		{
+			int ifmap_index = local_ifmap_fold[0][y] * systolic_height + y;
+			int systolic_y_ifmap_base_x = MIN(ifmap_index % ifmap_iter_width * stride, ifmap_width-filter_width);
+			int systolic_y_ifmap_base_y = MIN(ifmap_index / ifmap_iter_width * stride, ifmap_height-filter_height);
+			uint64_t systolic_y_ifmap_base = ifmap_base_addr + systolic_y_ifmap_base_y * ifmap_width * element_unit + systolic_y_ifmap_base_x * element_unit;
+
+			if(ifmap_index < ifmap_iter_width * ifmap_iter_height && offset[0][y]>=0)
+			{
+				int tmp_offset = offset[0][y];
+				int tuned_offset = 0;
+				while(tmp_offset >= filter_width)
+				{
+					if(tmp_offset >= filter_size_one_channel)
+					{
+						tuned_offset += ifmap_size_one_channel;
+						tmp_offset -= filter_size_one_channel;
+					}
+					else
+					{
+						tuned_offset += ifmap_width;
+						tmp_offset -= filter_width;
+					}
+				}
+				tuned_offset += tmp_offset;
+				next_ifmap_set.insert((systolic_y_ifmap_base+tuned_offset*element_unit)/cacheline_size*cacheline_size);
+				if(SRAM_TRACE)
+					next_ifmap_vector.push_back(systolic_y_ifmap_base+tuned_offset*element_unit);
+			}
+			else if(SRAM_TRACE)
+				next_ifmap_vector.push_back((uint64_t)-1);
+		}
 	}
 
 
