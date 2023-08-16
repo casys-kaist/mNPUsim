@@ -12,7 +12,7 @@ void software_request_generator::gemm_computation()
 {
 	int sum_tile_size, selected_tile_height, selected_tile_width, selected_filter_tile_width;
 
-	//analytical tile size [Evaluating Spatial Accelerator Architectures with Tiled Matrix-Matrix Multiplication (TPDS 2022)]
+	//analytical tile size [Evaluating Spatial Accelerator Architectures with Tiled Matrix-Matrix Multiplication (TPDS 2022): Output Stationary]
 	sum_tile_size = (tile_ifmap_size + tile_filter_size + tile_ofmap_size)/element_unit * 2;
 
 	selected_tile_height = (double)ifmap_height/systolic_width * systolic_width;
