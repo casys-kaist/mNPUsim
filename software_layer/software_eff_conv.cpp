@@ -21,6 +21,14 @@ void software_request_generator::conv_fold_parallel_computation()
 		}
 	}
 
+	if(!SRAM_TRACE)
+		pre_local_cycle=0;
+
+	cout << "cacheline_size: " << cacheline_size << endl;
+
+	uint64_t active_pe = 0;
+	uint64_t idle_pe = 0;
+
 	while(true)
 	{
 		//check_finish_or_not
@@ -39,7 +47,6 @@ void software_request_generator::conv_fold_parallel_computation()
 
 		if(is_fin)
 			break;
-
 		// find filter element
 		for(int x=0;x<systolic_width;x++)
 		{
@@ -129,6 +136,16 @@ void software_request_generator::conv_fold_parallel_computation()
 			}
 		}
 
+		if(is_full())
+		{
+			tile_output();
+			cout << "tile(eff_conv): " << ++full_num << endl;
+		}
+
+		//move: next_(filter|ifmap)_set -> dram_(filter|ifmap)_set + reset: next_(filter|ifmap)_set
+		move_reset_dram();
+		move_reset_sram();	
+
 		//next_step
 		for(int x=0;x<systolic_width;x++)
 		{
@@ -151,6 +168,10 @@ void software_request_generator::conv_fold_parallel_computation()
 			pre_local_cycle+=unit_compute;
 	}
 
+	tile_output();
+	cout << "tile(eff_conv): " << ++full_num << endl;
+
+	write_output(result_path, utilization_result, to_string(active_pe)+"/"+to_string(active_pe+idle_pe)+"="+to_string((double)active_pe/(active_pe+idle_pe)));
 
 	//free
 	for(int i=0;i<systolic_width;i++)
