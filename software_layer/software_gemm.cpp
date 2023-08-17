@@ -2,13 +2,13 @@
 #include "../accelerator.h"
 
 //--------------------------------------------------
-// name: software_request_generator::gemm_computation
+// name: software_request_generator::gemm_translation
 // usage: gemm operations with continuous systolic array input.
 // we support SPM-level tiling in gemm_computation. It supported in gemm-translated phase.
 // gemm is indirectly computed into conv-layer. It converted to conv (similar to MAESTRO simulator)
 // [M, K] x [K, N] gemm -> [X, Y, C] ifmap, [R, S ,C, N] filter conv: C = K (in GEMM), Y = M (in GEMM), K = N (in GEMM), X = R = S = 1
 //--------------------------------------------------
-void software_request_generator::gemm_computation()
+void software_request_generator::gemm_translation()
 {
 	int sum_tile_size, selected_tile_height, selected_tile_width, selected_filter_tile_width;
 
