@@ -117,7 +117,7 @@ void read_config(npu_accelerator *ng, string arch_file, string network_file, vec
 	cout << "tile_size(ifmap, filter, ofmap): " << ng->tile_ifmap_size << ", " << ng->tile_filter_size << ", " << ng->tile_ofmap_size << " Bytes" << endl;
 	cout << "dataflow: " << ng->dataflow_type << endl;
 	cout << "element_unit: " << ng->element_unit << " Bytes" << endl;
-	cout << "is_special_function_unit: " << boolalpha << ng->is_special_function_unit << boolalpha << endl;
+	cout << "unit_compute: " << ng->unit_compute << endl;
 	cout << "2. network_parsing" << endl;
 	cout << "model_name, layer_name, ifmap(width x height x channel), filter(width x height x channel x # of filter), stride, layer_type, ifmap_base_addr, filter_base_addr, ofmap_base_addr" << endl;
 	for(int i=0;i<ng->network_info.size();i++)
@@ -168,30 +168,21 @@ void read_arch_config(npu_accelerator *ng, string file_name)
 			ng->dataflow_type = str_buf;
 			break;
 		case 19:
-			ng->element_unit = stoi(str_buf); //Bytes
+			ng->element_unit = stoi(str_buf); // Bytes
 			break;
 		case 23:
 			ng->cacheline_size = stoi(str_buf);
 			break;
 		case 25:
 			ng->tile_ifmap_size = stoull(str_buf);
-//			if(ng->tile_ifmap_size==0)
-//				ng->tile_ifmap_size = ng->sram_ifmap_size/2;
 			break;
 		case 27:
 			ng->tile_filter_size = stoull(str_buf);
-//			if(ng->tile_filter_size==0)
-//				ng->tile_filter_size = ng->sram_filter_size/2;
 			break;
 		case 29:
 			ng->tile_ofmap_size = stoull(str_buf);
-//			if(ng->tile_ofmap_size==0)
-//				ng->tile_ofmap_size = ng->sram_ofmap_size/2;
 			break;
 		case 31:
-			ng->is_special_function_unit = (str_buf==string("true"));
-			break;
-		case 33:
 			ng->unit_compute = stoull(str_buf);
 			break;
 		}
