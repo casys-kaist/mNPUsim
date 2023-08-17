@@ -1,0 +1,4 @@
+network_config/network_architecture/test/test3_network.csv
+network_config/network_architecture/CNN/alexnet_out_im2col.csv
+network_config/network_architecture/Recommendation/DLRM_out_im2col.csv
+network_config/network_architecture/CNN/yolo_tiny_in_im2col.csv

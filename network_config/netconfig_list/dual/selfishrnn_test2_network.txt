@@ -1,0 +1,2 @@
+network_config/network_architecture/RNN/selfishrnn.csv
+network_config/network_architecture/test/test2_network.csv

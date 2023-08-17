@@ -1,0 +1,1 @@
+network_config/network_architecture/Recommendation/DLRM_out_im2col.csv

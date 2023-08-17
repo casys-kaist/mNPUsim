@@ -1,0 +1,4 @@
+network_config/network_architecture/RNN/DeepSpeech2_out_im2col.csv
+network_config/network_architecture/CNN/alexnet_out_im2col.csv
+network_config/network_architecture/RNN/DeepSpeech2_out_im2col.csv
+network_config/network_architecture/CNN/alexnet_in_im2col.csv

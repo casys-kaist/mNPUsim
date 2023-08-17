@@ -1,0 +1,4 @@
+network_config/network_architecture/CNN/yolo_tiny_in_im2col.csv
+network_config/network_architecture/RNN/DeepSpeech2_in_im2col.csv
+network_config/network_architecture/test/test1_network.csv
+network_config/network_architecture/Recommendation/DLRM_out_im2col.csv

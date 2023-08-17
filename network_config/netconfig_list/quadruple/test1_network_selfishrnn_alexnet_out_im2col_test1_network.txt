@@ -1,0 +1,4 @@
+network_config/network_architecture/test/test1_network.csv
+network_config/network_architecture/RNN/selfishrnn.csv
+network_config/network_architecture/CNN/alexnet_out_im2col.csv
+network_config/network_architecture/test/test1_network.csv

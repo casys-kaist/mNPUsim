@@ -1,0 +1,4 @@
+network_config/network_architecture/test/test6_network.csv
+network_config/network_architecture/Recommendation/DLRM_out_im2col.csv
+network_config/network_architecture/test/test4_network.csv
+network_config/network_architecture/RNN/DeepSpeech2_out_im2col.csv

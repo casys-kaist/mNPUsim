@@ -1,0 +1,4 @@
+network_config/network_architecture/CNN/Resnet50_out_im2col.csv
+network_config/network_architecture/CNN/alexnet_out_im2col.csv
+network_config/network_architecture/test/test2_network.csv
+network_config/network_architecture/Attention/gpt2.csv

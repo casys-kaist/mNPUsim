@@ -1,0 +1,4 @@
+network_config/network_architecture/RNN/DeepSpeech2_in_im2col.csv
+network_config/network_architecture/test/test4_network.csv
+network_config/network_architecture/RNN/selfishrnn.csv
+network_config/network_architecture/test/test3_network.csv
