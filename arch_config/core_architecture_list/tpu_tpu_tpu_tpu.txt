@@ -1,0 +1,4 @@
+arch_config/core_architecture/arch_tpu_small.csv
+arch_config/core_architecture/arch_tpu_small.csv
+arch_config/core_architecture/arch_tpu_small.csv
+arch_config/core_architecture/arch_tpu_small.csv
