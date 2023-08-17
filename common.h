@@ -32,9 +32,6 @@
 #define SRAM_TRACE false
 #define DRAM_TRACE_NPU_RUN false
 #define SRAM_TRACE_NPU_RUN false
-#define IS_MEM_ONLY false
-#define IS_CONTENTION_AWARE false
-#define IS_TILE_SELECTION false
 
 //debug option
 #define DEBUG false
