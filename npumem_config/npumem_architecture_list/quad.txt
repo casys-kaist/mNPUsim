@@ -1,4 +1,0 @@
-npumem_config/npumem_architecture/quad.cfg
-npumem_config/npumem_architecture/quad.cfg
-npumem_config/npumem_architecture/quad.cfg
-npumem_config/npumem_architecture/quad.cfg

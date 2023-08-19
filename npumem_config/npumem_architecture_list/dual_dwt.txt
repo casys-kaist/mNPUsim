@@ -1,0 +1,2 @@
+npumem_config/npumem_architecture/dual_dwt.cfg
+npumem_config/npumem_architecture/dual_dwt.cfg
