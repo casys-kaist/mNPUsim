@@ -57,8 +57,8 @@ void clear_output(string result_path)
 {
 	string OUTPUT_DIR = result_path + INTERMEDIATE_CONFIG_DIR + " "
 		+ result_path + INTERMEDIATE_DIR + " "
-		+ result_path + CLOCK_DIR + " "
-		+ result_path + RESULT_DIR;
+		+ result_path + RESULT_DIR + " "
+		+ result_path + DRAMREQ_NPU_DIR;
 	string cmd = "rm -rf " + OUTPUT_DIR;
 	system(cmd.c_str());
 }
@@ -73,10 +73,12 @@ void clear_output(string result_path)
 void write_output(string result_path, string file_name, string write_str)
 {
 	//make dir for output
-    string OUTPUT_DIR = result_path + INTERMEDIATE_CONFIG_DIR + " "
-        + result_path + INTERMEDIATE_DIR + " "
-        + result_path + CLOCK_DIR + " "
-        + result_path + RESULT_DIR;
+	string OUTPUT_DIR;
+	if(DRAMREQ_NPU_TRACE)
+		OUTPUT_DIR = result_path + INTERMEDIATE_CONFIG_DIR + " " + result_path + INTERMEDIATE_DIR + " " + result_path + RESULT_DIR + " " + result_path + DRAMREQ_NPU_DIR;
+	else
+		OUTPUT_DIR = result_path + INTERMEDIATE_CONFIG_DIR + " " + result_path + INTERMEDIATE_DIR + " " + result_path + RESULT_DIR;
+
 	string cmd = "mkdir -p " + OUTPUT_DIR;
 	system(cmd.c_str());
 

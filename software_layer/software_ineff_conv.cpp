@@ -7,7 +7,7 @@
 //--------------------------------------------------
 // Dataflow: os-stationary
 
-void conv_non_fold_parallel_computation()
+void software_request_generator::conv_non_fold_parallel_computation()
 {
 	// *_fold: folding caused by SPM-size
 	// local_*_fold: folding caused by systolic array-size

@@ -203,8 +203,11 @@ void software_request_generator::init_file_io()
 	sram_read_filter_intermediate = result_path + INTERMEDIATE_DIR+"sram_filter_"+suffix_layer;
 	sram_write_ofmap_intermediate = result_path + INTERMEDIATE_DIR+"sram_ofmap_"+suffix_layer;
 
-	dram_read_result = result_path + RESULT_DIR+"dram_read_"+suffix_layer;
-	dram_write_result = result_path + RESULT_DIR+"dram_write_"+suffix_layer;
+	if(DRAMREQ_NPU_TRACE)
+	{
+		dramreq_read_npu = result_path + DRAMREQ_NPU_DIR+"dramreq_read_npu_"+suffix_layer;
+		dramreq_write_npu = result_path + DRAMREQ_NPU_DIR+"dramreq_write_npu_"+suffix_layer;
+	}
 	sram_read_ifmap_result = result_path + RESULT_DIR+"sram_ifmap_"+suffix_layer;
 	sram_read_filter_result = result_path + RESULT_DIR+"sram_filter_"+suffix_layer;
 	sram_write_ofmap_result = result_path + RESULT_DIR+"sram_ofmap_"+suffix_layer;
@@ -297,13 +300,13 @@ void software_request_generator::move_reset_sram()
 	// move
 	for(vector<uint64_t>::iterator itr = next_filter_vector.begin(); itr != next_filter_vector.end(); ++itr){
 		sram_filter_vector.push_back(*itr);
-    }
+	}
 	for(vector<uint64_t>::iterator itr = next_ifmap_vector.begin(); itr != next_ifmap_vector.end(); ++itr){
 		sram_ifmap_vector.push_back(*itr);
-    }
+	}
 	for(vector<uint64_t>::iterator itr = next_ofmap_vector.begin(); itr != next_ofmap_vector.end(); ++itr){
 		sram_ofmap_vector.push_back(*itr);
-    }
+	}
 
 	//init: for memory deallocate swap to empty vector is necessary
 	vector<uint64_t>().swap(next_filter_vector);

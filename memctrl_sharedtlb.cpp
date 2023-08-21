@@ -7,10 +7,9 @@ NPUMemory::NPUMemory(NPUMemConfig config, uint32_t pagebits, uint64_t dram_capac
 	printf("NPU-%d with DRAM partition %ld B, Local SPM %d B, and %d-way TLB with %d entries\n", 
 			npu_idx, dram_capacity, config.spm_size, config.tlb_assoc, config.tlb_entrynum);
 	printf("Assigned SPM idx: %d, %d\n", m_spm0_idx, m_spm1_idx);
-    m_tlb = shared_tlb;
-    m_twolevtlb = NULL;
-    m_shared_tlb = true;
-    m_offset = dram_capacity/(uint64_t)total_npunum*(uint64_t)npu_idx;
+	m_tlb = shared_tlb;
+	m_shared_tlb = true;
+	m_offset = dram_capacity/(uint64_t)total_npunum*(uint64_t)npu_idx;
 
 	if (fake_mode){
 		m_spm0 = NULL;
@@ -24,5 +23,5 @@ NPUMemory::NPUMemory(NPUMemConfig config, uint32_t pagebits, uint64_t dram_capac
 		}
 	}
 
-    m_tlbqueue = new multimap<uint64_t, DRAMPacket>;
+	m_tlbqueue = new multimap<uint64_t, DRAMPacket>;
 }

@@ -13,7 +13,7 @@ There are several options of connection.
 * -1 (Sequential connection): the ifmap of this layer is the ofmap of previous layer.
 * -2 (New address connection):  the ifmap of this layer is the new-space (new tensor in this network).
 * *n (<= BOUNDARY_IFMAP_OFMAP_ARRAY)*: the ifmap/filter/ofmap is the output of *n*th layer.
-* *m (> BOUNDARY_IFMAP_OFMAP_ARRAY)*: the ifmap/filter/ofmap is the input of *m-(BOUNDARY_IFMAP_OFMAP_ARRAY)*th layer.
+* *m (> BOUNDARY_IFMAP_OFMAP_ARRAY)*: the ifmap/filter/ofmap is the input of *m-BOUNDARY_IFMAP_OFMAP_ARRAY*th layer.
 
 The address is translated from base network file to intermediate network file.
 Therefore, the ifmap/filter/ofmap base address values in intermediate network files are absolute value while relative values in original network files.

@@ -19,18 +19,16 @@
 
 #define INTERMEDIATE_DIR string("intermediate/")
 #define INTERMEDIATE_CONFIG_DIR string("intermediate_config/")
-#define CLOCK_DIR string("clock/")
 #define RESULT_DIR string("result/")
+#define DRAMREQ_NPU_DIR string("dramreq_npu/")
 #define BITS_TO_BYTES 8.0
 
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
 
 //trace option
-#define DRAM_TRACE false
 #define SRAM_TRACE false
-#define DRAM_TRACE_NPU_RUN false
-#define SRAM_TRACE_NPU_RUN false
+#define DRAMREQ_NPU_TRACE false
 
 //addressing
 #define BOUNDARY_IFMAP_OFMAP_ARRAY 1000000

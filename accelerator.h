@@ -84,8 +84,8 @@ public:
 	string sram_read_ifmap_intermediate;
 	string sram_read_filter_intermediate;
 	string sram_write_ofmap_intermediate;
-	string dram_read_result;
-	string dram_write_result;
+	string dramreq_read_npu;
+	string dramreq_write_npu;
 	string sram_read_ifmap_result;
 	string sram_read_filter_result;
 	string sram_write_ofmap_result;

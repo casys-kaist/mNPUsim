@@ -5,7 +5,7 @@
 MemoryController* memctrl;
 void callback(uint64_t addr)
 {
-    memctrl->callback(addr);
+	memctrl->callback(addr);
 }
 
 int npu_setup(string archconfig, string netconfig, npu_accelerator* npu_layer_setup, npu_accelerator* npu, string result_path, vector<string> input_co_runners)

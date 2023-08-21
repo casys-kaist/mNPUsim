@@ -51,30 +51,30 @@ void readNPUMemConfig(NPUMemConfig* config, char* file_name)
 			config->is_double_buffer = !!(atoi(buf));
 			continue;
 		}
-        if (!strncmp(opbuf, "tlb_portnum", 12)){
-            config->tlb_portnum = (uint32_t)atoi(buf);
-            continue;
-        }
-        if (!strncmp(opbuf, "ptw_num", 8)){
-            config->ptw_num = (uint32_t)atoi(buf);
-            continue;
-        }
-        if (!strncmp(opbuf, "pt_step_num", 13)){
-            config->pt_step_num = (uint32_t)atoi(buf);
-            continue;
-        }
-        if (!strncmp(opbuf, "is_tpreg", 9)){
-            config->is_tpreg = !!(atoi(buf));
-            continue;
-        }
-        if (!strncmp(opbuf, "token_bucket", 13)){
-            config->token_bucket = atoi(buf);
-            continue;
-        }
-        if (!strncmp(opbuf, "token_epoch", 12)){
-            config->token_epoch = atoi(buf);
-            continue;
-        }
+		if (!strncmp(opbuf, "tlb_portnum", 12)){
+			config->tlb_portnum = (uint32_t)atoi(buf);
+			continue;
+		}
+		if (!strncmp(opbuf, "ptw_num", 8)){
+			config->ptw_num = (uint32_t)atoi(buf);
+			continue;
+		}
+		if (!strncmp(opbuf, "pt_step_num", 13)){
+			config->pt_step_num = (uint32_t)atoi(buf);
+			continue;
+		}
+		if (!strncmp(opbuf, "is_tpreg", 9)){
+			config->is_tpreg = !!(atoi(buf));
+			continue;
+		}
+		if (!strncmp(opbuf, "token_bucket", 13)){
+			config->token_bucket = atoi(buf);
+			continue;
+		}
+		if (!strncmp(opbuf, "token_epoch", 12)){
+			config->token_epoch = atoi(buf);
+			continue;
+		}
 	}
 
 	fclose(f);

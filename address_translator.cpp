@@ -34,7 +34,7 @@ bool DRAMAllocator::allocate(uint64_t* p_addr_saver)
 	m_free_list->pop();
 	m_free_pages->erase(*p_addr_saver);
 	m_pmem_left -= m_page_gran;
-    return true;
+	return true;
 }
 
 
@@ -62,11 +62,11 @@ bool DRAMAllocator::free(uint64_t p_addr)
 
 //AddressTranslator
 AddressTranslator::AddressTranslator(uint32_t page_gran, uint64_t pmem_capacity, uint64_t first_address)
-    : m_pmem_capacity(pmem_capacity), m_page_gran(page_gran)
+	: m_pmem_capacity(pmem_capacity), m_page_gran(page_gran)
 {
 	m_allocator = new DRAMAllocator(page_gran, pmem_capacity, first_address);
 	m_translation_table = new map<uint64_t, uint64_t>;
-    m_inverse_table = new map<uint64_t, uint64_t>;
+	m_inverse_table = new map<uint64_t, uint64_t>;
 }
 
 
@@ -75,7 +75,7 @@ AddressTranslator::AddressTranslator(uint32_t page_gran, uint64_t pmem_capacity,
 	: m_pmem_capacity(pmem_capacity), m_page_gran(page_gran), m_allocator(allocator)
 {
 	m_translation_table = new map<uint64_t, uint64_t>;
-    m_inverse_table = new map<uint64_t, uint64_t>;
+	m_inverse_table = new map<uint64_t, uint64_t>;
 }
 
 
@@ -91,7 +91,7 @@ bool AddressTranslator::allocate(uint64_t v_addr)
 	uint64_t p_addr = ~0;
 	if (m_allocator->allocate(&p_addr)){
 		m_translation_table->insert(make_pair(v_addr, p_addr));
-        m_inverse_table->insert(make_pair(p_addr, v_addr));
+		m_inverse_table->insert(make_pair(p_addr, v_addr));
 		return true;
 	}else{//Allocation failed
 		return false;
@@ -150,11 +150,11 @@ int AddressTranslator::translate(uint64_t v_addr, uint64_t* p_addr_saver)
 
 int AddressTranslator::inverse(uint64_t p_addr, uint64_t* v_addr_saver)
 {
-    map<uint64_t, uint64_t>::iterator iter = m_inverse_table->find(p_addr);
-    if (iter == m_translation_table->end()){
-        (*v_addr_saver) = ~0;
-        return -1;
-    }
-    (*v_addr_saver) = iter->second;
-    return 0;
+	map<uint64_t, uint64_t>::iterator iter = m_inverse_table->find(p_addr);
+	if (iter == m_translation_table->end()){
+		(*v_addr_saver) = ~0;
+		return -1;
+	}
+	(*v_addr_saver) = iter->second;
+	return 0;
 }

@@ -95,7 +95,7 @@ void npu_group::run()
 						is_terminated[idx] = false;
 					}
 				}else{
-					printf("End of NPU-%d layer %d execution at tick %ld (iteration %d out of %d)\n", idx, npu_layer[idx], npus[idx]->compute_cycle, npus[idx]->iter_cnt, npus[idx]->iteration);
+					printf("End of NPU-%d layer(or tile for out-im2col conv) %d execution at tick %ld (iteration %d out of %d)\n", idx, npu_layer[idx], npus[idx]->compute_cycle, npus[idx]->iter_cnt, npus[idx]->iteration);
 					write_output(npus[idx]->result_path, npus[idx]->execution_cycle_result, to_string(npus[idx]->compute_cycle));
 				}
 				npus[idx]->is_setup = false;
@@ -235,14 +235,14 @@ void npu_group::mem_op(ifstream *data_file_ptr, int type, int npu_idx)
 		// read tile (ifmap + filter)
 		dram_load_write(data_file_ptr, &dram_data_buffer, npu_idx);
 		dram_load_write(data_file_ptr, &dram_data_buffer, npu_idx);
-		if(DRAM_TRACE_NPU_RUN)
-			write_output(npus[npu_idx]->result_path, npus[npu_idx]->dram_read_result, dram_buffer_string(&dram_data_buffer, memory_cycle));
+		if(DRAMREQ_NPU_TRACE)
+			write_output(npus[npu_idx]->result_path, npus[npu_idx]->dramreq_read_npu, dram_buffer_string(&dram_data_buffer, memory_cycle));
 		break;
 	case 1:
 		// write tile (ofmap)
 		dram_load_write(data_file_ptr, &dram_data_buffer, npu_idx);
-		if(DRAM_TRACE_NPU_RUN)
-			write_output(npus[npu_idx]->result_path, npus[npu_idx]->dram_write_result, dram_buffer_string(&dram_data_buffer, memory_cycle));
+		if(DRAMREQ_NPU_TRACE)
+			write_output(npus[npu_idx]->result_path, npus[npu_idx]->dramreq_write_npu, dram_buffer_string(&dram_data_buffer, memory_cycle));
 	}
 	//DRAMsim Routine
 	if(DEBUG)
