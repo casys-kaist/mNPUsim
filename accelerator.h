@@ -10,7 +10,7 @@ struct NPU_packet
 	uint32_t npu_idx;
 	int op_type;
 	bool eof;
-	bool need_sync;
+	bool need_sync; //computation barrier (set when true)
 };
 
 class software_request_generator {
@@ -119,7 +119,7 @@ public:
 	bool is_first;
 	bool tile_full;
 	bool is_setup;
-	bool is_returned;
+	bool is_returned; // memory barrier (set when false)
 	ifstream file;
 	ifstream file_dread;
 	ifstream file_dwrite;
