@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 	memconfig.dramoutdir = npugroup.result_path + memconfig.dramoutdir;
 	string cmd = "mkdir -p " + memconfig.dramoutdir;
 	system(cmd.c_str());
-	npugroup.memctrl = new MemoryController(memconfig, false);
+	npugroup.memctrl = new MemoryController(memconfig);
 	memctrl = npugroup.memctrl;
 	(npugroup.memctrl)->dramSetup(memconfig.dramconfig, memconfig.dramoutdir, callback);
 	//end dramsim setup
