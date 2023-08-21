@@ -57,7 +57,6 @@ void clear_output(string result_path)
 {
 	string OUTPUT_DIR = result_path + INTERMEDIATE_CONFIG_DIR + " "
 		+ result_path + INTERMEDIATE_DIR + " "
-		+ result_path + TIME_DIR + " "
 		+ result_path + CLOCK_DIR + " "
 		+ result_path + RESULT_DIR;
 	string cmd = "rm -rf " + OUTPUT_DIR;
@@ -76,7 +75,6 @@ void write_output(string result_path, string file_name, string write_str)
 	//make dir for output
     string OUTPUT_DIR = result_path + INTERMEDIATE_CONFIG_DIR + " "
         + result_path + INTERMEDIATE_DIR + " "
-        + result_path + TIME_DIR + " "
         + result_path + CLOCK_DIR + " "
         + result_path + RESULT_DIR;
 	string cmd = "mkdir -p " + OUTPUT_DIR;
@@ -190,155 +188,6 @@ void read_arch_config(npu_accelerator *ng, string file_name)
 	}
 
 	file.close();
-
-	if(IS_CONTENTION_AWARE)
-	{
-		if(ng->co_runners.size()==1)
-			file.open("tile_config/result_prediction_single_layer_wise.csv");
-		else
-			file.open("tile_config/result_prediction_layer_wise.csv");
-		getline(file, str_buf); //skip first line
-
-		while(!file.eof())
-		{
-			getline(file, str_buf, ',');
-			str_buf.erase(remove(str_buf.begin(), str_buf.end(), ' '), str_buf.end());
-			str_buf.erase(remove(str_buf.begin(), str_buf.end(), '\n'), str_buf.end());
-
-			string input_network1;
-			string input_network2;
-			int input_target_network;
-			string input_layer_name;
-			uint64_t input_predict_time;
-			
-			if(file.eof())
-				break;
-			input_network1 = str_buf;
-			getline(file, str_buf, ',');
-			str_buf.erase(remove(str_buf.begin(), str_buf.end(), ' '), str_buf.end());
-			str_buf.erase(remove(str_buf.begin(), str_buf.end(), '\n'), str_buf.end());
-			input_network2 = str_buf;
-			getline(file, str_buf, ',');
-			input_target_network=stoi(str_buf);
-			getline(file, str_buf, ',');
-			input_layer_name=str_buf;
-			getline(file, str_buf);
-			input_predict_time=stoull(str_buf);
-
-			ng->sen_curve.push_back(make_tuple(input_network1, input_network2, input_target_network, input_layer_name, input_predict_time));
-		}
-
-		cout << "sen_curve_parsing" << endl;
-		cout << "model1, model2, predict_model, layer, exec_predict" << endl;
-		for(int i=0;i<ng->sen_curve.size();i++)
-		{
-			cout << get<0>(ng->sen_curve[i]) << ", " << get<1>(ng->sen_curve[i]) << ", " << get<2>(ng->sen_curve[i]) << ", " << get<3>(ng->sen_curve[i]) << ", " << get<4>(ng->sen_curve[i]) << endl ;
-		}
-
-		file.close();
-		
-	}
-	else if(IS_TILE_SELECTION)
-	{
-		file.open("tile_config/result_tile_selection.csv");
-		getline(file, str_buf); //skip first line
-
-		while(!file.eof())
-		{
-			getline(file, str_buf, ',');
-			str_buf.erase(remove(str_buf.begin(), str_buf.end(), ' '), str_buf.end());
-			str_buf.erase(remove(str_buf.begin(), str_buf.end(), '\n'), str_buf.end());
-
-			string input_network1;
-			string input_network2;
-			string input_network3;
-			string input_network4;
-
-			uint64_t input_predict_model;
-			double input_tile_selection;
-			
-			if(file.eof())
-				break;
-			input_network1 = str_buf;
-			getline(file, str_buf, ',');
-			str_buf.erase(remove(str_buf.begin(), str_buf.end(), ' '), str_buf.end());
-			str_buf.erase(remove(str_buf.begin(), str_buf.end(), '\n'), str_buf.end());
-			input_network2 = str_buf;
-			getline(file, str_buf, ',');
-			input_network3 = str_buf;
-			getline(file, str_buf, ',');
-			input_network4 = str_buf;
-			getline(file, str_buf, ',');
-			input_predict_model=stoi(str_buf);
-			getline(file, str_buf);
-			input_tile_selection=stod(str_buf);
-
-			ng->tile_selection.push_back(make_tuple(input_network1, input_network2, input_network3, input_network4, input_predict_model, input_tile_selection));
-		}
-
-		cout << "tile_selection_parsing" << endl;
-		cout << "model1, model2, model3, model4, predict_model, tile_selection" << endl;
-		for(int i=0;i<ng->tile_selection.size();i++)
-		{
-			cout << get<0>(ng->tile_selection[i]) << ", " << get<1>(ng->tile_selection[i]) << ", " << get<2>(ng->tile_selection[i]) << ", " << get<3>(ng->tile_selection[i]) << ", " << get<4>(ng->tile_selection[i]) << ", " << get<5>(ng->tile_selection[i]) << endl ;
-		}
-
-		file.close();
-	}
-
-	if(ng->tile_ifmap_size==0 || ng->tile_filter_size==0 || ng->tile_ofmap_size==0)
-	{
-		ng->is_per_layer_tile=true;
-		index=0;
-		file.open("tile_config/tile_gamma.csv");
-		getline(file, str_buf); //skip first line
-
-		while(!file.eof())
-		{
-			getline(file, str_buf, ',');
-			str_buf.erase(remove(str_buf.begin(), str_buf.end(), ' '), str_buf.end());
-			str_buf.erase(remove(str_buf.begin(), str_buf.end(), '\n'), str_buf.end());
-
-			string input_network;
-			string input_layer_name;
-			uint64_t input_tile_ifmap_size, input_tile_filter_size, input_tile_ofmap_size, input_tile_max_size;
-			uint64_t input_M, input_N, input_K;
-			
-			if(file.eof())
-				break;
-			input_network = str_buf;
-			getline(file, str_buf, ',');
-			str_buf.erase(remove(str_buf.begin(), str_buf.end(), ' '), str_buf.end());
-			str_buf.erase(remove(str_buf.begin(), str_buf.end(), '\n'), str_buf.end());
-			input_layer_name = str_buf;
-			getline(file, str_buf, ',');
-			input_tile_ifmap_size=stoull(str_buf) * ng->element_unit;
-			getline(file, str_buf, ',');
-			input_tile_filter_size=stoull(str_buf) * ng->element_unit;
-			getline(file, str_buf, ',');
-			input_tile_ofmap_size=stoull(str_buf) * ng->element_unit;
-			getline(file, str_buf, ',');
-			input_tile_max_size=stoull(str_buf) * ng->element_unit;
-			getline(file, str_buf, ',');
-			input_M=stoull(str_buf);
-			getline(file, str_buf, ',');
-			input_N=stoull(str_buf);
-			getline(file, str_buf);
-			input_K=stoull(str_buf);
-
-			ng->tile_info.push_back(make_tuple(input_network, input_layer_name, input_tile_ifmap_size, input_tile_filter_size, input_tile_ofmap_size, input_tile_max_size, input_M, input_N, input_K));
-		}
-
-		cout << "tile_parsing" << endl;
-		cout << "model_name, layer_name, i, f, o, max, M, N, K" << endl;
-		for(int i=0;i<ng->tile_info.size();i++)
-		{
-			cout << get<0>(ng->tile_info[i]) << ", " << get<1>(ng->tile_info[i]) << ", " << get<2>(ng->tile_info[i]) << ", " << get<3>(ng->tile_info[i]) << ", " << get<4>(ng->tile_info[i]) << ", " << get<5>(ng->tile_info[i]) << ", " << get<6>(ng->tile_info[i]) << ", " << get<7>(ng->tile_info[i]) << ", " << get<8>(ng->tile_info[i]) << endl;
-		}
-
-		file.close();
-
-	}
 }
 
 
