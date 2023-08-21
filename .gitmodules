@@ -1,0 +1,3 @@
+[submodule "DRAMsim3"]
+	path = DRAMsim3
+	url = git@github.com:terrafin/DRAMsim3.git
