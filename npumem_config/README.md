@@ -21,11 +21,3 @@ To handle these efficiently, mNPUsim - multi-npu receives 'NPU-side memory confi
 * is_tpreg: NeuMMU-like TPReg activated?
 * token_bucket
 * token_epoch
-
-## Two-Level Translation
-For two-level translation, 'NPU-side memory configuration file' requires some more fields:
-* l2tlb_hit_latency, l2tlb_miss_latency: (Additional) L2 TLB hit/miss latency in NPU clock cycle.
-* l2tlb_assoc: L2 TLB associativity.
-* l2tlb_entrynum: Total number of L2 TLB entries.
-* l2_pagebits: Offset for second-level translation.
-* l2tlb_portnum: L2 TLB bandwidth (access/cycle).
