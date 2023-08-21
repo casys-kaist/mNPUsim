@@ -111,12 +111,8 @@ uint64_t NPUMemory::spmAccess(uint64_t addr, uint64_t curtick, bool is_write)
 void NPUMemory::printTLBStat()
 {
 	printf("*** Stat of TLB %d ***\n", m_npu_idx);
-	if (m_tlb){
-		printf("Access: %ld\n", m_tlb->numAccess());
-		printf("Miss: %ld\n", m_tlb->numMiss());
-	}else{
-		m_twolevtlb->printStat();
-	}
+	printf("Access: %ld\n", m_tlb->numAccess());
+	printf("Miss: %ld\n", m_tlb->numMiss());
 	printf("*** End of TLB %d Stat\n", m_npu_idx);
 }
 
@@ -233,8 +229,8 @@ void NPUMemory::tryAddToken()
 
 
 //Shared memory controller for DRAM access management
-MemoryController::MemoryController(MemoryConfig memconfig, bool twolevel)
-    : m_clock(0), m_dramsim(NULL), m_npu_num(memconfig.npu_num), m_twolevtlb(twolevel), m_dram_unit(memconfig.dram_unit), m_addr_ptr(0),
+MemoryController::MemoryController(MemoryConfig memconfig)
+    : m_clock(0), m_dramsim(NULL), m_npu_num(memconfig.npu_num), m_dram_unit(memconfig.dram_unit), m_addr_ptr(0),
     m_dramrdtraffic(0), m_dramwrtraffic(0), m_dramrdaccess(0), m_dramwraccess(0), m_log_activated(false), m_reqlog_activated(false), m_fake_mode(true), m_module_num(memconfig.module_num)
 {
     m_memconfig = new MemoryConfig;
@@ -259,7 +255,7 @@ MemoryController::MemoryController(MemoryConfig memconfig, bool twolevel)
 	}
 
     m_cur_buffer_idx = ~0;
-}//should be followed by npumemSetup(->twolevTLBSetup,) and dramSetup
+}//should be followed by npumemSetup and dramSetup
 
 
 //--------------------------------------------------
@@ -400,11 +396,7 @@ void MemoryController::dramRequest(map<uint64_t, int>* requests, bool is_write, 
         int size = m_iter->second;
         int partition;
         for (partition = 0; partition < size; partition += m_dram_unit){
-		    if (!m_twolevtlb){
-        	    tlbRequest(addr + partition, MIN(m_dram_unit, size - partition), npu_idx, spm_idx, is_write);
-		    }else{
-			    twolevtlbRequest(addr + partition, MIN(m_dram_unit, size - partition), npu_idx, spm_idx, is_write);
-		    }
+        	tlbRequest(addr + partition, MIN(m_dram_unit, size - partition), npu_idx, spm_idx, is_write);
             if (is_write){
                 m_dramwraccess++;
             }else{
@@ -413,7 +405,7 @@ void MemoryController::dramRequest(map<uint64_t, int>* requests, bool is_write, 
             howmany++;
         }
     }
-    printf("end of dramRequest for NPU-%d - %d requests, at tick %ld\n", npu_idx, howmany, m_clock);
+    //printf("end of dramRequest for NPU-%d - %d requests, at tick %ld\n", npu_idx, howmany, m_clock);
 }
 
 
@@ -554,12 +546,7 @@ void MemoryController::atomic()
         uint64_t paddr;
         assert(iter->first == m_clock);
         DRAMPacket dpacket = iter->second;
-        if (!m_twolevtlb){
-            m_npumemory[dpacket.npu_idx]->tlbAccess(dpacket.page_addr, m_clock, &exectick, &paddr);
-        }else{
-            uint64_t offset = (dpacket.vaddr)%m_pagesize;
-            m_npumemory[dpacket.npu_idx]->twolevtlbAccess(dpacket.page_addr, m_clock, &exectick, &paddr, offset, m_memconfig->is_shared_l2);
-        }
+        m_npumemory[dpacket.npu_idx]->tlbAccess(dpacket.page_addr, m_clock, &exectick, &paddr);
         m_npumemory[dpacket.npu_idx]->m_popped = false;
         m_npumemory[dpacket.npu_idx]->m_no_req = false;
         dpacket.paddr = paddr + (dpacket.vaddr - dpacket.page_addr);

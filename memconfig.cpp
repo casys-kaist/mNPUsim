@@ -40,14 +40,6 @@ void readMemConfig(MemoryConfig* memconfig, char* file_name)
 			memconfig->is_dynamic_partition = !!(atoi(buf));
 			continue;
 		}
-		if (!strncmp(opbuf, "twolev_tran", 12)){
-			memconfig->is_twolev_tran = !!(atoi(buf));
-			continue;
-		}
-		if (!strncmp(opbuf, "l2tlb_shared", 13)){
-			memconfig->is_shared_l2 = !!(atoi(buf));
-			continue;
-		}
         if (!strncmp(opbuf, "ptw_shared", 11)){
             memconfig->is_shared_ptw = !!(atoi(buf));
             continue;
