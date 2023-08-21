@@ -25,7 +25,7 @@ make single_test1
 * DEBUG: Debug option. (default: false)
 
 ## Parameters
-As shown in Makefile, it requires five parameters: 1) core architecture, 2) target network, 3) target dram, 4) npumem config, and 5) result path.
+As shown in Makefile, it requires six parameters: 1) core architecture, 2) target network, 3) target dram, 4) npumem config, 5) result path, and 6) misc config.
 Each configuration has list of single configuration files and result path is for output directory.
 
 ## Results
