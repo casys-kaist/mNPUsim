@@ -89,8 +89,6 @@ public:
 	string sram_read_ifmap_result;
 	string sram_read_filter_result;
 	string sram_write_ofmap_result;
-	string time_result;
-	string clock_result;
 	string execution_cycle_result;
 	string avg_cycle_result;
 	string utilization_result;
