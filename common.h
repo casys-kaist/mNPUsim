@@ -19,7 +19,6 @@
 
 #define INTERMEDIATE_DIR string("intermediate/")
 #define INTERMEDIATE_CONFIG_DIR string("intermediate_config/")
-#define TIME_DIR string("time/")
 #define CLOCK_DIR string("clock/")
 #define RESULT_DIR string("result/")
 #define BITS_TO_BYTES 8.0
@@ -32,6 +31,9 @@
 #define SRAM_TRACE false
 #define DRAM_TRACE_NPU_RUN false
 #define SRAM_TRACE_NPU_RUN false
+
+//addressing
+#define BOUNDARY_IFMAP_OFMAP_ARRAY 1000000
 
 //debug option
 #define DEBUG false
