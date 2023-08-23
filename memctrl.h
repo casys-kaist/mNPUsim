@@ -1,7 +1,6 @@
 #include "DRAMsim3/src/dramsim3.h"
 #include "spm.h"
 #include "tlb.h"
-#include "twolevtlb.h"
 
 #ifndef __MEMCTRL_H__
 #define __MEMCTRL_H__
@@ -54,7 +53,6 @@ struct MemoryConfig //shared
     uint32_t module_num = 1;
     bool is_dram_log = true;
 	bool is_dynamic_partition = true;
-	bool is_twolev_tran = false;
     bool is_shared_tlb = false;
 	bool is_shared_l2 = false;
     bool is_shared_ptw = false;
@@ -69,7 +67,6 @@ class NPUMemory
 {//synchronized with DRAM tick
 	private:
 		TLB* m_tlb;
-		TwoLevTLB* m_twolevtlb;
 		ScratchPad* m_spm0;
 		ScratchPad* m_spm1;
         multimap<uint64_t, DRAMPacket>* m_tlbqueue;
@@ -94,13 +91,9 @@ class NPUMemory
         bool m_is_begin;
 		NPUMemory(NPUMemConfig config, uint32_t pagebits, DRAMAllocator* allocator, uint64_t dram_capacity, bool fake_mode, bool is_log, int npu_idx, int total_npunum, PTWManager* ptw);//base
         NPUMemory(NPUMemConfig config, uint32_t pagebits, uint64_t dram_capacity, bool fake_mode, bool is_log, int npu_idx, int total_npunum, TLB* shared_tlb);//shared single-level TLB
-        NPUMemory(NPUMemConfig config, bool fake_mode, bool is_log, int npu_idx, int total_npunum, TwoLevTLBConfig tlbconfig, TLB* shared_l2, PTWManager* ptw, DRAMAllocator* pmem_allocator, uint64_t dram_capacity);//L2 TLB
-        NPUMemory(NPUMemConfig config, bool fake_mode, bool is_log, int npu_idx, int total_npunum, TwoLevTLBConfig tlbconfig, TLB* shared_l2, PTWManager* ptw, DRAMAllocator* lmem_allocator, DRAMAllocator* pmem_allocator, uint64_t lmem_capacity, uint64_t pmem_capacity);//Two-level addr tran
         void ptwSetup(int walker_init, int walker_upper, int walker_lower, int npu_num, bool is_return_ptw){m_tlb->setPartition(m_npu_idx, walker_init, walker_upper, walker_lower, npu_num, is_return_ptw);};
 		void tlbAccess(uint64_t page_addr, uint64_t curtick, uint64_t* exectick, uint64_t* paddr);
-		void twolevtlbAccess(uint64_t page_addr, uint64_t curtick, uint64_t* exectick, uint64_t* paddr, uint64_t offset, bool is_shared_l2);
 		void writeTLBLog(string tlb_fname);
-		void writeTwoLevTLBLog(string l1tlb_fname, string l2tlb_fname);
 		void receiveTransaction(uint64_t addr, uint64_t curtick, int buffer_idx);
 		uint64_t spmAccess(uint64_t addr, uint64_t curtick, bool is_write);
 		void printTLBStat();
@@ -156,15 +149,13 @@ class MemoryController
         uint32_t m_module_num;
         uint32_t m_cur_buffer_idx;
 		bool m_fake_mode;//decoupling SPM-core timing and DRAM timing
-		bool m_twolevtlb;
 		bool m_log_activated;
         bool m_reqlog_activated;
 
     public:
-        MemoryController(MemoryConfig memconfig, bool twolevel);
+        MemoryController(MemoryConfig memconfig);
         void setConfig(MemoryConfig config) {(*m_memconfig) = config;};
 		void npumemSetup(NPUMemConfig config, int npu_idx);
-        void npumemSetup(NPUMemConfig npuconfig, TwoLevTLBConfig tlbconfig, int npu_idx);
         void ptwSetup(int* walker_init, int* walker_upper, int* walker_lower);
         void dramSetup(const string &dramconfig, const string &dramoutdir, function<void(uint64_t)>cb_func);
         void getDRAMsim(MemorySystem** dramsim_saver, int module_idx) {(*dramsim_saver) = m_dramsim[module_idx];};
@@ -172,7 +163,6 @@ class MemoryController
 		void flipBuffer(uint32_t npu_idx) {m_npumemory[npu_idx]->flipBuffer();};
         void dramRequest(map<uint64_t, int>* requests, bool is_write, uint32_t npu_idx);
 		void tlbRequest(uint64_t addr, uint32_t size, uint32_t npu_idx, uint32_t spm_idx, bool is_write);
-		void twolevtlbRequest(uint64_t addr, uint32_t size, uint32_t npu_idx, uint32_t spm_idx, bool is_write);
         uint32_t calcModuleIdx(uint64_t p_addr);
         uint64_t calcModuleAddr(uint64_t p_addr);
         uint64_t calcPhyAddr(uint64_t m_addr, uint32_t module_idx);
@@ -195,7 +185,6 @@ class MemoryController
 		void writeDRAMLog(uint64_t curtick, uint64_t addr, uint32_t npu_idx);
 		void writeDRAMReqLog(uint64_t curtick, uint64_t addr, uint32_t npu_idx);
         void writeTLBLog();
-		void writeTwoLevTLBLog();
         void printStat();
 		void markFinished(uint32_t npu_idx){m_finished_set->insert(npu_idx);};
 		uint64_t npu2dramTick(uint64_t tick, uint32_t npu_idx){return m_npumemory[npu_idx]->npu2dramTick(tick);};
