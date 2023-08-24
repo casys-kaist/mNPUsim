@@ -409,7 +409,7 @@ void MemoryController::dramRequest(map<uint64_t, int>* requests, bool is_write, 
             howmany++;
         }
     }
-    printf("end of dramRequest for NPU-%d - %d requests, at tick %ld\n", npu_idx, howmany, m_clock);
+    //printf("end of dramRequest for NPU-%d - %d requests, at tick %ld\n", npu_idx, howmany, m_clock);
 }
 
 
