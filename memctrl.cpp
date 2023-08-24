@@ -238,6 +238,7 @@ MemoryController::MemoryController(MemoryConfig memconfig)
 	int i;
 	m_npumemory = (NPUMemory**)malloc(sizeof(NPUMemory*)*m_npu_num);
 	m_pagesize = (uint32_t)pow(2, memconfig.pagebits);
+    m_chunksize = (uint64_t)pow(2, 12)*(uint64_t)(memconfig.channel_num);
     printf("Page size: 0x%xB\n", m_pagesize);
 	m_pmem_allocator = NULL;
     m_shared_l1 = NULL;
@@ -466,9 +467,9 @@ uint64_t MemoryController::calcModuleAddr(uint64_t p_addr)
 {
     if ((m_memconfig->is_dynamic_partition)||(m_memconfig->module_num != m_memconfig->npu_num)){
         //page-wise interleaving
-        uint64_t offset = p_addr%(uint64_t)(m_pagesize*(m_memconfig->channel_num));
-        uint64_t chunknum = (p_addr/(uint64_t)(m_pagesize*(m_memconfig->channel_num)))/(uint64_t)m_module_num;
-        return (chunknum*(uint64_t)m_pagesize*(m_memconfig->channel_num)) + offset + calcModuleIdx(p_addr); //flag
+        uint64_t offset = p_addr%m_chunksize;
+        uint64_t chunknum = (p_addr/m_chunksize)/(uint64_t)m_module_num;
+        return chunknum*m_chunksize + offset + calcModuleIdx(p_addr); //flag
     }else{
         return (p_addr%((m_memconfig->dram_capacity)/(uint64_t)(m_memconfig->module_num))) + calcModuleIdx(p_addr);
     }
@@ -479,8 +480,8 @@ uint64_t MemoryController::calcPhyAddr(uint64_t m_addr, uint32_t module_idx)
 {
     uint64_t module_addr = m_addr - module_idx;
     if ((m_memconfig->is_dynamic_partition)||(m_memconfig->module_num != m_memconfig->npu_num)){
-        uint64_t offset = module_addr%(uint64_t)(m_pagesize*(m_memconfig->channel_num));
-        uint64_t pchunk = (module_addr - offset)*m_module_num + (uint64_t)module_idx*(uint64_t)m_pagesize*(uint64_t)(m_memconfig->channel_num);
+        uint64_t offset = module_addr%m_chunksize;
+        uint64_t pchunk = (module_addr - offset)*m_module_num + (uint64_t)module_idx*m_chunksize;
         return pchunk + offset;
     }else{
         return module_addr + ((m_memconfig->dram_capacity)/(uint64_t)(m_memconfig->module_num)*(uint64_t)module_idx);

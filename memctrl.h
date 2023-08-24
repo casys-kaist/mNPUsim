@@ -141,6 +141,7 @@ class MemoryController
         uint64_t m_dramrdaccess;
         uint64_t m_dramwraccess;
 		uint64_t m_addr_ptr;
+        uint64_t m_chunksize;
         uint32_t m_pagesize;
 		uint32_t m_pagesize_lm;
         uint32_t m_npu_num;
