@@ -451,7 +451,7 @@ uint32_t MemoryController::calcModuleIdx(uint64_t p_addr)
 {
     if ((m_memconfig->is_dynamic_partition)||(m_memconfig->module_num != m_memconfig->npu_num)){
         //page-wise interleaving
-        return (uint32_t)((p_addr/(uint64_t)(m_pagesize*m_memconfig->channel_num))%(uint64_t)m_module_num);
+        return (uint32_t)((p_addr/m_chunksize)%(uint64_t)m_module_num);
     }else{
         return (uint32_t)(p_addr/((m_memconfig->dram_capacity)/(uint64_t)(m_memconfig->module_num)));
     }
