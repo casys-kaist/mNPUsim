@@ -1,5 +1,5 @@
-#ifndef __TP_SIM_ACCELERATOR__
-#define __TP_SIM_ACCELERATOR__
+#ifndef __MNPUSIM_ACCELERATOR__
+#define __MNPUSIM_ACCELERATOR__
 
 #include "common.h"
 #include "memctrl.h"

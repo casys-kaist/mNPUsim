@@ -136,7 +136,7 @@ void TLBSet::flush(uint32_t npu_idx, uint64_t* exectick)
 	}
 	int flushed = 0;
 	for (i=0; i<m_entry_num; i++){
-		if (m_table[i].m_npuidx == npu_idx){
+		if (m_table[i].m_npuidx == npu_idx && m_table[i].m_valid){
 			(*exectick) = MAX((*exectick), m_table[i].m_tick);
 			flushed++;
 			mrubits[i] = 0;
