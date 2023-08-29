@@ -48,7 +48,7 @@ struct MemoryConfig //shared
 	uint64_t dram_capacity = 2l<<33;//8GB -> 2^33B. Not 21, 2L!)
     uint32_t npu_num = 1;
     uint32_t dram_unit = 64;//B
-	uint32_t pagebits = 12;
+	uint32_t pagebits = 12;//virtual memory page granularity
     uint32_t channel_num = 8;
     uint32_t module_num = 1;
     bool is_dram_log = true;
