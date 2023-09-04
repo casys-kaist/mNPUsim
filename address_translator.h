@@ -21,6 +21,7 @@ class DRAMAllocator
 		uint64_t pmemCapacity() {return m_pmem_capacity;};
 		uint32_t pageSize() {return m_page_gran;};
 		uint64_t firstAddr() {return m_firstpage_addr;};
+        uint64_t remainedCapacity() {return ((uint64_t)(m_free_list->size()))*((uint64_t)m_page_gran);};
 };
 
 
@@ -44,5 +45,6 @@ class AddressTranslator
 		int translate(uint64_t v_addr, uint64_t* p_addr_saver);
 		int inverse(uint64_t p_addr, uint64_t* v_addr_saver);
 		DRAMAllocator* getAllocator(){return m_allocator;};
+        uint64_t usedCapacity(){return pmemCapacity() - m_allocator->remainedCapacity();};
 };
 #endif

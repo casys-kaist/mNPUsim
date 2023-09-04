@@ -960,6 +960,7 @@ void MemoryController::printStat()
     for (i=0; i<m_npu_num; i++){
 		m_npumemory[i]->printTLBStat();
     }
+    m_npumemory[0]->pmemStat();
 }
 
 

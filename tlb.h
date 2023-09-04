@@ -81,6 +81,7 @@ class TLB
 		DRAMAllocator* getAllocator(){return m_translator->getAllocator();};
 		AddressTranslator* getTranslator(){return m_translator;};
 		void setTranslator(AddressTranslator* translator){m_translator = translator;};
+        void pmemStat(){printf("consumed 0x%lxB out of 0x%lxB\n", m_translator->usedCapacity(), m_translator->pmemCapacity());};
 };
 
 

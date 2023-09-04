@@ -116,6 +116,7 @@ class NPUMemory
         void decreaseReq(uint32_t spm_idx){(m_spm0_idx == spm_idx)? m_spm0_req-- : m_spm1_req--;};
         bool isReqEmpty(uint32_t spm_idx){return ((m_spm0_idx == spm_idx)? (!m_spm0_req) : (!m_spm1_req));};
         int getTokenStep(){return m_token_step;};
+        void pmemStat() {m_tlb->pmemStat();};
 };
 
 
