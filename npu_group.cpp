@@ -118,8 +118,6 @@ void npu_group::run()
 			}
 			if (npus[i]->is_returned){
 				pkt.eof = npus[i]->run(&(pkt.data_file_ptr), &(pkt.op_type), &(pkt.need_sync));
-				if(DEBUG)
-					printf("memory_cycle %ld / compute_cycle %ld\n", memory_cycle, npus[i]->compute_cycle);
 				if (pkt.data_file_ptr){
 					cycle_idx_map.insert(make_pair(npu2dramTick(npus[i]->compute_cycle, i), pkt));
 				}
@@ -313,6 +311,8 @@ void npu_group::mem_finished(int npu_idx)
 
 void npu_group::mem_sync(int npu_idx)
 {
+	if(DEBUG)
+		printf("memory_cycle %ld / compute_cycle %ld\n", memory_cycle, npus[i]->compute_cycle);
 	npus[npu_idx]->compute_cycle = MAX(npus[npu_idx]->compute_cycle, memctrl->getTick(npu_idx));
 	memory_cycle = memctrl->npu2dramTick(npus[npu_idx]->compute_cycle, npu_idx);
 	while (memctrl->getTick(~0) < memory_cycle){
