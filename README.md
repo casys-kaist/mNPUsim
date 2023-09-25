@@ -1,4 +1,4 @@
-# mNPUsim
+# mNPUsim: A Cycle-accurate Multi-core NPU simulator
 
 ## Simulator Outline
 mNPUsim is a cycle-accurate simulator modeling NPU system with off-chip memory.
@@ -33,3 +33,6 @@ Each configuration has list of single configuration files and result path is for
 * intermediate_config: Reconstructed configuration. Unlike original network file, it considers the GEMM translation (e.g the im2col-out convolution), absolute address translation.
 * intermediate: The intermediate results except the memory constraints. Based on this intermediate result, our simulator generates the memory requests. The format of output line is (cycle), (list of address). Therefore, only first value (cycle) is remained when SRAM_TRACE is false.
 * result: Several summary files: 1) Average cycles, 2) the size of memory footprint, 3) per layer execution cycle, and 4) PE utilization.
+
+## Publication
+mNPUsim: Evaluating the Effect of Sharing Resources in Multi-core NPUs (IISWC 2023)
