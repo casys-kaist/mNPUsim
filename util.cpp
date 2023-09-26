@@ -167,22 +167,22 @@ void read_arch_config(npu_accelerator *ng, string file_name)
 		case 13:
 			ng->dataflow_type = str_buf;
 			break;
-		case 19:
+		case 15:
 			ng->element_unit = stoi(str_buf); // Bytes
 			break;
-		case 23:
+		case 17:
 			ng->cacheline_size = stoi(str_buf);
 			break;
-		case 25:
+		case 19:
 			ng->tile_ifmap_size = stoull(str_buf);
 			break;
-		case 27:
+		case 21:
 			ng->tile_filter_size = stoull(str_buf);
 			break;
-		case 29:
+		case 23:
 			ng->tile_ofmap_size = stoull(str_buf);
 			break;
-		case 31:
+		case 25:
 			ng->unit_compute = stoull(str_buf);
 			break;
 		}
