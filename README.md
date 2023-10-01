@@ -35,4 +35,6 @@ Each configuration has list of single configuration files and result path is for
 * result: Several summary files: 1) Average cycles, 2) the size of memory footprint, 3) per layer execution cycle, and 4) PE utilization.
 
 ## Publication
-mNPUsim: Evaluating the Effect of Sharing Resources in Multi-core NPUs (IISWC 2023)
+* Title: mNPUsim: Evaluating the Effect of Sharing Resources in Multi-core NPUs
+* Conference: IISWC 2023
+* Authors: Soojin Hwnag, Sunho Lee, Jungwoo Kim, Hongbeen Kim and Jaehyuk Huh
