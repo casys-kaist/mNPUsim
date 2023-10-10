@@ -37,4 +37,4 @@ Each configuration has list of single configuration files and result path is for
 ## Publication
 * Title: mNPUsim: Evaluating the Effect of Sharing Resources in Multi-core NPUs
 * Conference: IISWC 2023
-* Authors: Soojin Hwnag, Sunho Lee, Jungwoo Kim, Hongbeen Kim and Jaehyuk Huh
+* Authors: Soojin Hwang*, Sunho Lee*, Jungwoo Kim, Hongbeen Kim and Jaehyuk Huh (*: Equal contribution)
