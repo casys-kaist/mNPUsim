@@ -64,8 +64,22 @@ void software_request_generator::set_variable_config(int index)
 	ifmap_base_addr_array.push_back(ifmap_base_addr);
 
 	//filter addressing
-	filter_base_addr = new_space_addr;
-	new_space_addr += filter_height*filter_width*filter_depth*filter_num*element_unit;
+	if(index==0)
+	{
+		filter_base_addr = 0;
+		new_space_addr += filter_height*filter_width*filter_depth*filter_num*element_unit;
+	}
+	else if(get<10>(network_info[index])==uint64_minus_1)
+		filter_base_addr = ofmap_base_addr;
+	else if(get<10>(network_info[index])==uint64_minus_2)
+	{
+		filter_base_addr = new_space_addr;
+		new_space_addr += filter_height*filter_width*filter_depth*filter_num*element_unit;
+	}
+	else if(get<10>(network_info[index])<=BOUNDARY_IFMAP_OFMAP_ARRAY)
+		filter_base_addr = ofmap_base_addr_array[get<10>(network_info[index])-1];
+	else
+		filter_base_addr = ifmap_base_addr_array[get<10>(network_info[index])-1-BOUNDARY_IFMAP_OFMAP_ARRAY];
 
 	//ofmap addressing
 	if(get<12>(network_info[index])==uint64_minus_1)
