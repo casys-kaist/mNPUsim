@@ -357,18 +357,20 @@ void MemoryController::callback(uint64_t waddr)
 {
     //search from request queue
     int i;
-    uint32_t module_idx = (uint32_t)(waddr & 63);//temporal treatment. only working for 64B line size..
+    uint32_t module_idx = (uint32_t)(waddr & 63);//temporal treatment. only working for 64B or larger line size...
     uint64_t addr = calcPhyAddr(waddr, module_idx);
     //printf("Module idx: %d for address 0x%lx (original PA 0x%lx)\n", module_idx, waddr, addr);
     for (i=0; i<m_buffer_num; i++){
         list<uint64_t>::iterator iter = find(m_reqs[i]->begin(), m_reqs[i]->end(), addr);
         if (iter != (m_reqs[i]->end())){
-            m_reqs[i]->remove(addr);
+			//remove only one element!
+            m_reqs[i]->erase(iter);
             break;
         }
     }
 
 	m_npumemory[i%m_npu_num]->m_remain -= 1;
+	//printf("m_remain: (npu-idx: %d, spm_idx %d) %d\n", i%m_npu_num, i, m_npumemory[i%m_npu_num]->m_remain);
     m_npumemory[i%m_npu_num]->decreaseReq(i%m_npu_num);
 	writeDRAMLog(m_clock, addr, i%m_npu_num);
 
@@ -569,6 +571,7 @@ void MemoryController::atomic()
         m_npumemory[dpacket.npu_idx]->m_no_req = false;
         dpacket.paddr = paddr + (dpacket.vaddr - dpacket.page_addr);
         m_reqs[dpacket.spm_idx]->push_back(dpacket.paddr);
+		//printf("spm_idx: %d for PA 0x%lx\n", dpacket.spm_idx, dpacket.paddr);
         iter = m_tlbqueue->erase(iter);
         m_pagequeue->insert(make_pair(exectick, dpacket));
         if (exectick == ~(0l)){
@@ -781,7 +784,7 @@ uint32_t MemoryController::popStallRequest()
 
     //atomic ver.
     for (idx=0; idx<m_npu_num; idx++){
-        if (checkNPURequest(idx)&&(!(m_npumemory[idx]->m_no_req))){
+        if (checkNPURequest(idx)&&(!(m_npumemory[idx]->m_no_req))){//just have finished
             endidx = idx;
             break;
         }
