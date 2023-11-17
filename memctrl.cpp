@@ -357,7 +357,7 @@ void MemoryController::callback(uint64_t waddr)
 {
     //search from request queue
     int i;
-    uint32_t module_idx = (uint32_t)(waddr & 63);//temporal treatment. only working for 64B or larger line size...
+    uint32_t module_idx = (uint32_t)(waddr & 31);//temporal treatment. only working for 32B or larger line size...
     uint64_t addr = calcPhyAddr(waddr, module_idx);
     //printf("Module idx: %d for address 0x%lx (original PA 0x%lx)\n", module_idx, waddr, addr);
     for (i=0; i<m_buffer_num; i++){
