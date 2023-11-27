@@ -32,6 +32,9 @@ void software_request_generator::gemm_translation()
 
 	selected_filter_tile_width = MIN(MAX(1, tile_filter_size/element_unit/selected_tile_width), filter_width);
 
+	if(selected_filter_tile_width == filter_width)
+		selected_tile_width = MIN(MAX(1, tile_filter_size/element_unit/selected_filter_tile_width), ifmap_width);
+
 	// Tile-based conversion
 	int tile_id=0;
 	uint64_t ifmap_tile_addr_offset = 0;
