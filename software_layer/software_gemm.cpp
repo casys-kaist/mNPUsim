@@ -30,10 +30,10 @@ void software_request_generator::gemm_translation()
 		selected_tile_height = MIN(MAX(1, MIN(sum_tile_size/selected_tile_width, ifmap_height)), ifmap_height);
 	}
 
-	selected_filter_tile_width = MIN(MAX(1, tile_filter_size/element_unit/selected_tile_width), filter_width);
+	selected_filter_tile_width = MIN(MAX(1, MIN(tile_filter_size/element_unit/selected_tile_width, tile_ofmap_size/element_unit/selected_tile_height)), filter_width);
 
 	if(selected_filter_tile_width == filter_width)
-		selected_tile_width = MIN(MAX(1, tile_filter_size/element_unit/selected_filter_tile_width), ifmap_width);
+		selected_tile_width = MIN(MAX(1, MIN(tile_filter_size/element_unit/selected_filter_tile_width, tile_ifmap_size/element_unit/selected_tile_height)), ifmap_width);
 
 	// Tile-based conversion
 	int tile_id=0;
