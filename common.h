@@ -36,6 +36,9 @@
 //debug option
 #define DEBUG false
 
+//tiling option
+#define SUM_TILING false
+
 using namespace std;
 
 string extract_name(string file_name);
