@@ -1,5 +1,8 @@
 # mNPUsim: A Cycle-accurate Multi-core NPU simulator
 
+## Notice
+2023/11/30: Need to update submodule (DRAMsim3 variant) with 'git submodule update --remote'
+
 ## Simulator Outline
 mNPUsim is a cycle-accurate simulator modeling NPU system with off-chip memory.
 ![Overview](./mnpusim_multinpu_overview.png)

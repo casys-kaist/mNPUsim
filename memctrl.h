@@ -159,15 +159,15 @@ class MemoryController
         void setConfig(MemoryConfig config) {(*m_memconfig) = config;};
 		void npumemSetup(NPUMemConfig config, int npu_idx);
         void ptwSetup(int* walker_init, int* walker_upper, int* walker_lower);
-        void dramSetup(const string &dramconfig, const string &dramoutdir, function<void(uint64_t)>cb_func);
+        void dramSetup(const string &dramconfig, const string &dramoutdir, function<void(uint64_t, int)>cb_func);
         void getDRAMsim(MemorySystem** dramsim_saver, int module_idx) {(*dramsim_saver) = m_dramsim[module_idx];};
-        void callback(uint64_t waddr);
+        void callback(uint64_t waddr, int module_idx);
 		void flipBuffer(uint32_t npu_idx) {m_npumemory[npu_idx]->flipBuffer();};
         void dramRequest(map<uint64_t, int>* requests, bool is_write, uint32_t npu_idx);
 		void tlbRequest(uint64_t addr, uint32_t size, uint32_t npu_idx, uint32_t spm_idx, bool is_write);
         uint32_t calcModuleIdx(uint64_t p_addr);
         uint64_t calcModuleAddr(uint64_t p_addr);
-        uint64_t calcPhyAddr(uint64_t m_addr, uint32_t module_idx);
+        uint64_t calcPhyAddr(uint64_t module_addr, uint32_t module_idx);
         int calcTotalChannel(uint64_t waddr){return calcModuleIdx(waddr)*(m_memconfig->channel_num) + m_dramsim[calcModuleIdx(waddr)]->getChannel(waddr);};
         void clockTick();
         void atomic();

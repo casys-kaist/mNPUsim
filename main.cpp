@@ -3,9 +3,9 @@
 
 //A wrapper for callback
 MemoryController* memctrl;
-void callback(uint64_t addr)
+void callback(uint64_t addr, int midx)
 {
-	memctrl->callback(addr);
+	memctrl->callback(addr, midx);
 }
 
 int npu_setup(string archconfig, string netconfig, npu_accelerator* npu_layer_setup, npu_accelerator* npu, string result_path, vector<string> input_co_runners)

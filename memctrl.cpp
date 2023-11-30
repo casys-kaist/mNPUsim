@@ -335,13 +335,13 @@ void MemoryController::ptwSetup(int* walker_init, int* walker_upper, int* walker
 // Note: should be used right after initalization, before dramRequest / cb_func is this->callback
 //--------------------------------------------------
 
-void MemoryController::dramSetup(const string &dramconfig, const string &dramoutdir, function<void(uint64_t)>cb_func)
+void MemoryController::dramSetup(const string &dramconfig, const string &dramoutdir, function<void(uint64_t, int)>cb_func)
 {
     cout << "DRAM configuration file name: " << dramconfig << endl;
     m_dramsim = (MemorySystem**)malloc(sizeof(MemorySystem*)*m_module_num);
     int i;
     for (i=0; i<m_module_num; i++){
-        m_dramsim[i] = new MemorySystem(dramconfig, dramoutdir, cb_func, cb_func);
+        m_dramsim[i] = new MemorySystem(dramconfig, dramoutdir, cb_func, cb_func, i);
     }
     printf("%d Modules in total\n", m_module_num);
 }
@@ -353,11 +353,10 @@ void MemoryController::dramSetup(const string &dramconfig, const string &dramout
 // usage: callback function for memory read operation using dramsim3.
 //--------------------------------------------------
 
-void MemoryController::callback(uint64_t waddr)
+void MemoryController::callback(uint64_t waddr, int module_idx)
 {
     //search from request queue
     int i;
-    uint32_t module_idx = (uint32_t)(waddr & 31);//temporal treatment. only working for 32B or larger line size...
     uint64_t addr = calcPhyAddr(waddr, module_idx);
     //printf("Module idx: %d for address 0x%lx (original PA 0x%lx)\n", module_idx, waddr, addr);
     for (i=0; i<m_buffer_num; i++){
@@ -471,16 +470,15 @@ uint64_t MemoryController::calcModuleAddr(uint64_t p_addr)
         //page-wise interleaving
         uint64_t offset = p_addr%m_chunksize;
         uint64_t chunknum = (p_addr/m_chunksize)/(uint64_t)m_module_num;
-        return chunknum*m_chunksize + offset + calcModuleIdx(p_addr); //flag
+        return chunknum*m_chunksize + offset;
     }else{
-        return (p_addr%((m_memconfig->dram_capacity)/(uint64_t)(m_memconfig->module_num))) + calcModuleIdx(p_addr);
+        return (p_addr%((m_memconfig->dram_capacity)/(uint64_t)(m_memconfig->module_num)));
     }
 };
 
 
-uint64_t MemoryController::calcPhyAddr(uint64_t m_addr, uint32_t module_idx)
+uint64_t MemoryController::calcPhyAddr(uint64_t module_addr, uint32_t module_idx)
 {
-    uint64_t module_addr = m_addr - module_idx;
     if ((m_memconfig->is_dynamic_partition)||(m_memconfig->module_num != m_memconfig->npu_num)){
         uint64_t offset = module_addr%m_chunksize;
         uint64_t pchunk = (module_addr - offset)*m_module_num + (uint64_t)module_idx*m_chunksize;
