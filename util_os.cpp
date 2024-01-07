@@ -255,36 +255,38 @@ void software_request_generator::init_compute_variables()
 //--------------------------------------------------
 bool software_request_generator::is_full()
 {
-	int add_num=0;
+	int add_num_filter=0;
 	for(set<uint64_t>::iterator itr = next_filter_set.begin(); itr != next_filter_set.end(); ++itr)
 	{
 		if(dram_filter_set.find(*itr)==dram_filter_set.end())
-			add_num+=1;
+			add_num_filter+=1;
 	}
-	if((dram_filter_set.size()+add_num)*cacheline_size > tile_filter_size)
+	if(!SUM_TILING && (dram_filter_set.size()+add_num_filter)*cacheline_size > tile_filter_size)
 		return true;
 
-	add_num=0;
+	int add_num_ifmap=0;
 	for(set<uint64_t>::iterator itr = next_ifmap_set.begin(); itr != next_ifmap_set.end(); ++itr)
 	{
 		if(dram_ifmap_set.find(*itr)==dram_ifmap_set.end())
-			add_num+=1;
+			add_num_ifmap+=1;
 	}
-	if((dram_ifmap_set.size()+add_num)*cacheline_size > tile_ifmap_size)
+	if(!SUM_TILING && (dram_ifmap_set.size()+add_num_ifmap)*cacheline_size > tile_ifmap_size)
 		return true;
 
-	add_num=0;
+	int add_num_ofmap=0;
 	for(set<uint64_t>::iterator itr = next_ofmap_set.begin(); itr != next_ofmap_set.end(); ++itr)
 	{
 		if(dram_ofmap_set.find(*itr)==dram_ofmap_set.end())
-			add_num+=1;
+			add_num_ofmap+=1;
 	}
-	if((dram_ofmap_set.size()+add_num)*cacheline_size > tile_ofmap_size)
+	if(!SUM_TILING && (dram_ofmap_set.size()+add_num_ofmap)*cacheline_size > tile_ofmap_size)
+		return true;
+
+	if(SUM_TILING && (dram_filter_set.size() + add_num_filter + dram_ifmap_set.size() + add_num_ifmap + dram_ofmap_set.size() + add_num_ofmap)*cacheline_size > tile_filter_size + tile_ifmap_size + tile_ofmap_size)
 		return true;
 
 	return false;
 }
-
 
 //--------------------------------------------------
 // name: software_request_generator::move_reset_dram
