@@ -16,6 +16,8 @@ int npu_setup(string archconfig, string netconfig, npu_accelerator* npu_layer_se
 	read_config(npu_layer_setup, archconfig, netconfig, input_co_runners);
 	npu_layer_setup->config_update(generate_intermediate_path(result_path, netconfig, npu->npu_idx));
 	read_config(npu, archconfig, generate_intermediate_path(result_path, netconfig, npu->npu_idx), input_co_runners);
+
+	return 0;
 }
 
 
