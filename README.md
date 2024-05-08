@@ -41,3 +41,15 @@ Each configuration has list of single configuration files and result path is for
 * Title: mNPUsim: Evaluating the Effect of Sharing Resources in Multi-core NPUs
 * Conference: IISWC 2023
 * Authors: Soojin Hwang*, Sunho Lee*, Jungwoo Kim, Hongbeen Kim and Jaehyuk Huh (*: Equal contribution)
+
+## Citation
+If you use mNPUsim for your research, please cite our paper:
+```bash
+@inproceedings{mnpusim,
+  author = {Hwang, Soojin and Lee, Sunho and Kim, Jungwoo and Kim, Hongbeen and Huh, Jaehyuk},
+  title = {{mNPUsim: Evaluating the Effect of Sharing Resources in Multi-core NPUs}},
+  booktitle = {2023 IEEE International Symposium on Workload Charcterization (IISWC)},
+  year = {2023},
+  doi = {10.1109/IISWC59245.2023.00018}
+}
+```
