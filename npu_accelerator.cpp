@@ -38,6 +38,8 @@ void npu_accelerator::computation()
 			conv_non_fold_parallel_computation();
 		else if(layer_type==string("Pool"))
 			pool_computation();
+		else if(layer_type==string("Gemv"))
+			gemv_computation();
 	}
 }
 
