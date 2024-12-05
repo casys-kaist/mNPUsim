@@ -19,12 +19,17 @@ void software_request_generator::config_update(string intermediate_config_name)
 		//set variables
 		if(layer_type==string("Im2col_conv"))
 			set_variable_config_im2col_conv(i);
+		else if (layer_type==string("Gemv"))
+			set_variable_config_gemv(i);
 		else
 			set_variable_config(i);
 
-		if(layer_type==string("Gemm") || layer_type==string("Im2col_conv"))
+		if(layer_type==string("Gemm") || layer_type==string("Im2col_conv")){
 			gemm_translation();
-		else
+		}else if (layer_type == string("Gemv")){
+			gemv_translation();
+			address_update_gemv();
+		}else
 		{
 			init_compute_variables();
 

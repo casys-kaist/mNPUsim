@@ -20,3 +20,7 @@ single_test1:
 single_alexnet:
 	export LD_LIBRARY_PATH=./DRAMsim3:$$LD_LIBRARY_PATH &&\
 	./mnpusim arch_config/core_architecture_list/tpu.txt network_config/netconfig_list/single/alexnet_out_im2col.txt dram_config/total_dram_config/single_hbm2_256gbs.cfg npumem_config/npumem_architecture_list/single.txt single_alexnet misc_config/single.cfg
+
+single_gemv:
+	export LD_LIBRARY_PATH=./DRAMsim3:$$LD_LIBRARY_PATH &&\
+	./mnpusim arch_config/core_architecture_list/mvunit.txt network_config/netconfig_list/single/test_gemv.txt dram_config/total_dram_config/single_hbm2_256gbs.cfg npumem_config/npumem_architecture_list/single.txt single_test_gemv misc_config/single.cfg

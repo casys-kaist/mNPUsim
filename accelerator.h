@@ -44,6 +44,7 @@ public:
 	void set_variable(int index);
 	void set_variable_config(int index);
 	void set_variable_config_im2col_conv(int index);
+	void set_variable_config_gemv(int index);
 
 	//buffer
 	set<uint64_t> dram_filter_set, dram_ifmap_set, dram_ofmap_set; //unit: cacheline_size
@@ -62,10 +63,12 @@ public:
 	void conv_fold_parallel_computation();
 	void conv_non_fold_parallel_computation();
 	void pool_computation();
+	void gemv_computation();
 
 	// software functions (config update functions)
 	void config_update(string intermediate_config_name);
 	void gemm_translation();
+	void gemv_translation(); //NOTE: Unlike gemm_translation(), this function supports mapping to 'MV Unit' (1D systolic array)
 	string write_config_string;
 	uint64_t pre_local_cycle;
 
@@ -98,7 +101,9 @@ public:
 	uint64_t new_space_addr=0;
 	vector<uint64_t> ifmap_base_addr_array;
 	vector<uint64_t> ofmap_base_addr_array;
+	vector<uint64_t> filter_base_addr_array;
 	void address_update();
+	void address_update_gemv();
 
 	//intermediate result
 	void tile_output();
