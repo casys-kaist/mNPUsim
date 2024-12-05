@@ -8,7 +8,7 @@ all: single
 
 single:
 	export LD_LIBRARY_PATH=./DRAMsim3:$$LD_LIBRARY_PATH &&\
-	g++ $(LINK) $(DEBUG) $(SRCS) $(MEMSRCS) -o mnpusim -std=c++0x $(LIB)
+	g++ $(LINK) $(DEBUG) $(SRCS) $(MEMSRCS) -o mnpusim -std=c++11 $(LIB)
 
 clean:
 	rm -rf mnpusim single_test1/ single_alexnet/
