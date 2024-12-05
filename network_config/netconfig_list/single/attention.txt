@@ -1,0 +1,1 @@
+network_config/network_architecture/LLM/gpt3_175b_mha_s8192.csv

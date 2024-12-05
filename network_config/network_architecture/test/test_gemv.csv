@@ -1,0 +1,4 @@
+Layer name, IFMAP Height, IFMAP Width, Filter Height, Filter Width, Channels, Num Filter, Strides, Type, IFMAP Base Addr, Filter Base Addr, Ofmap Base Addr,
+Gemv1,256,256,256,1,1,1,1,Gemv,-2,-2,-1,
+Gemv2,512,256,256,1,1,1,1,Gemv,-1,-1,-1,
+Gemv3,500,512,512,1,1,1,1,Gemv,-2,-2,-1,
