@@ -5,7 +5,8 @@ mNPUsim receives 'network configuration list file' (.txt) as a second input. \
 
 ## Network Configuration File Specification
 The network configuration file format mostly follows SCALE-Sim v2 format. \
-Currently, this simulator supports Im2col_conv / Conv / Pool / Gemm.
+Currently, this simulator supports Im2col_conv / Conv / Pool / Gemm / Gemv.
+For Gemv, ifmap == matrix / filter == vector.
 
 ## Address in Network Architecture (IFMAP Base Addr, Filter Base Addr, Ofmap Base Addr)
 You can manually manage the start address of ifmap/filter/ofmap.
