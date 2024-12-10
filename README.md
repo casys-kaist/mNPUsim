@@ -1,6 +1,8 @@
 # mNPUsim: A Cycle-accurate Multi-core NPU simulator
 
 ## Notice
+2024/12/10: "mNPUsim Explained" is released on GitHub repository of mNPUsim.
+
 2024/12/05: Support for Dot product-based GEMV computation added. See newly added configuration files (arch_config/core_architecture/arch_mvunit_128.csv, network_config/network_architecture/test/test_gemv.csv, network_config/README.md) for more information.
 
 2023/11/30: Need to update submodule (DRAMsim3 variant) with 'git submodule update --remote'
