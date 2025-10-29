@@ -8,7 +8,8 @@
 2023/11/30: Need to update submodule (DRAMsim3 variant) with 'git submodule update --remote'
 
 ## White Paper
-![Link to the white paper](https://github.com/casys-kaist/mNPUsim/blob/main/mNPUsim_Explained.pdf?raw=true)
+![Link to the white paper](https://github.com/casys-kaist/mNPUsim/blob/main/mNPUsim_Explained.pdf) (Github Link)
+
 
 
 ## Simulator Outline
