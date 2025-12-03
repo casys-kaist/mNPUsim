@@ -97,7 +97,7 @@ void read_config(npu_accelerator *ng, string arch_file, string network_file, vec
 	ng->co_runners=input_co_runners;
 	for(int i=0;i<ng->co_runners.size();i++)
 	{
-		if(ng->co_runners[i]==string("ME"))
+		if(ng->co_runners[i]==string("CURRENT_RUNNER"))
 		{
 			ng->my_pos=i;
 			ng->co_runners[i]=extract_name(network_file);

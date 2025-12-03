@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
 		fscanf(f_net, "%s", netconfig);
 		npu_accelerator* npu_layer_setup = new npu_accelerator(i, iteration_inits[i], compute_cycle_inits[i]);
     		vector<string> tmp_co_runners=co_runners;
-		tmp_co_runners[i]=string("ME");
+		tmp_co_runners[i]=string("CURRENT_RUNNER");
 		npu_setup(string(archconfig), string(netconfig), npu_layer_setup, npugroup.npus[i], npugroup.result_path, tmp_co_runners);
 		delete npu_layer_setup;
 		//NPU-side memory setup
