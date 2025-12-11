@@ -8,8 +8,9 @@
 2023/11/30: Need to update submodule (DRAMsim3 variant) with 'git submodule update --remote'
 
 ## White Paper
-![Link to the white paper](https://github.com/casys-kaist/mNPUsim/blob/main/mNPUsim%20Explained.pdf)
+![Link to the white paper](https://github.com/casys-kaist/mNPUsim/blob/main/mNPUsim_Explained.pdf)
 
+If you encounter any rendering errors when attempting to view the whitepaper, please contact `sjhwang@casys.kaist.ac.kr`.
 
 ## Simulator Outline
 mNPUsim is a cycle-accurate simulator modeling NPU system with off-chip memory.
