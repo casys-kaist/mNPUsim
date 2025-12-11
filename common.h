@@ -37,7 +37,7 @@
 #define DEBUG false
 
 //tiling option
-#define SUM_TILING false
+#define SUM_TILING true
 
 using namespace std;
 
