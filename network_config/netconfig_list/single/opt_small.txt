@@ -1,0 +1,1 @@
+network_config/network_architecture/LLM/opt_small.csv

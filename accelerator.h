@@ -21,7 +21,6 @@ public:
 	int systolic_height, systolic_width;
 	uint64_t sram_ifmap_size, sram_filter_size, sram_ofmap_size;
 	uint64_t tile_ifmap_size, tile_filter_size, tile_ofmap_size;
-	string dataflow_type;
 	int cacheline_size, element_unit;
 	string result_path;
 
@@ -64,6 +63,12 @@ public:
 	void conv_non_fold_parallel_computation();
 	void pool_computation();
 	void gemv_computation();
+	void dir_gemm_computation();
+	void dir_gemm_tile_computation();
+	void ineff_dir_gemm_computation();
+	void ineff_dir_gemm_tile_computation();
+	void ineff_dir_gemm_tile_computation2(int ifmap_tile_start_addr, int filter_tile_start_addr, int ofmap_tile_start_addr);
+	void other_computation();
 
 	// software functions (config update functions)
 	void config_update(string intermediate_config_name);

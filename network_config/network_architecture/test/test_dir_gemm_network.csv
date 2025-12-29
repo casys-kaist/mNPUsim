@@ -1,0 +1,2 @@
+Layer name, IFMAP Height, IFMAP Width, Filter Height, Filter Width, Channels, Num Filter, Strides, Type, IFMAP Base Addr, Filter Base Addr, Ofmap Base Addr,
+Test_Dir_Gemm,8192,3072,3072,3072,1,1,1,Dir_Gemm,-1,-1,-1,

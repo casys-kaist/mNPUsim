@@ -29,8 +29,11 @@ void software_request_generator::config_update(string intermediate_config_name)
 		}else if (layer_type == string("Gemv")){
 			gemv_translation();
 			address_update_gemv();
-		}else
-		{
+		}else if (layer_type == string("Dir_Gemm")){
+			dir_gemm_computation();
+		}else if (layer_type == string("Ineff_Dir_Gemm")){
+			ineff_dir_gemm_computation();
+		}else{
 			init_compute_variables();
 
 			write_config_string += layer_name+string(",")+to_string(ifmap_height)+string(",")+to_string(ifmap_width)+string(",")+to_string(filter_height)+string(",")+to_string(filter_width)+string(",")+to_string(filter_depth)+string(",")+to_string(filter_num)+string(",")+to_string(stride)+string(",")+layer_type+string(",")+to_string(ifmap_base_addr)+string(",")+to_string(filter_base_addr)+string(",")+to_string(ofmap_base_addr)+string(",\n");
@@ -57,6 +60,9 @@ void software_request_generator::tile_output()
 		if((*itr) < min_addr)
 			min_addr = (*itr);
 	}
+	if(dram_filter_set.size()==0)
+		dram_string = "0,";
+
 	write_output(result_path, dram_read_intermediate,dram_string);
 
 	dram_string = "";
@@ -68,6 +74,8 @@ void software_request_generator::tile_output()
 		if((*itr) < min_addr)
 			min_addr = (*itr);
 	}
+	if(dram_ifmap_set.size()==0)
+		dram_string = "0,";
 	write_output(result_path, dram_read_intermediate,dram_string);
 
 	dram_string = "";
@@ -79,6 +87,8 @@ void software_request_generator::tile_output()
 		if((*itr) < min_addr)
 			min_addr = (*itr);
 	}
+	if(dram_ofmap_set.size()==0)
+		dram_string = "0,";
 	write_output(result_path, dram_write_intermediate,dram_string);
 
 	set<uint64_t>().swap(dram_filter_set);

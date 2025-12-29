@@ -40,6 +40,12 @@ void npu_accelerator::computation()
 			pool_computation();
 		else if(layer_type==string("Gemv"))
 			gemv_computation();
+		else if(layer_type==string("Dir_Tile_Gemm"))
+			dir_gemm_tile_computation();
+		else if(layer_type==string("Ineff_Dir_Tile_Gemm"))
+			ineff_dir_gemm_tile_computation();
+		else
+			other_computation();
 	}
 }
 

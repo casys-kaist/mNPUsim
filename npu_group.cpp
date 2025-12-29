@@ -106,8 +106,8 @@ void npu_group::run()
 			if (is_terminated[i] || (!(npus[i]->is_begin))){
 				continue;
 			}
-			if(DEBUG)
-				printf("receiving stall request from NPU-%d\n", i);
+//			if(DEBUG)
+//				printf("receiving stall request from NPU-%d\n", i);
 			NPU_packet pkt;
 			pkt.npu_idx = i;
 			if (idx == i){

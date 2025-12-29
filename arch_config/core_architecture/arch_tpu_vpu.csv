@@ -1,6 +1,6 @@
-arch_name, arch_tpu_small,
+arch_name, arch_tpu_vpu,
 systolic_height, 128,
-systolic_width, 128,
+systolic_width, 1,
 sram_ifmap_size, 12582912,
 sram_filter_size, 12582912,
 sram_ofmap_size, 12582912,

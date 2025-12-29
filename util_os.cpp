@@ -18,7 +18,10 @@ void software_request_generator::address_update()
 	if(DEBUG)
 		cout << "new_space_addr: " << new_space_addr << endl;
 	
-	addr_tmp = ofmap_base_addr + (ceil((ifmap_height-filter_height)/(double)stride)+1)*(ceil((ifmap_width-filter_width)/(double)stride)+1)*filter_num*element_unit;
+	if(layer_type != string("Other"))
+		addr_tmp = ofmap_base_addr + (ceil((ifmap_height-filter_height)/(double)stride)+1)*(ceil((ifmap_width-filter_width)/(double)stride)+1)*filter_num*element_unit;
+	else
+		addr_tmp = ofmap_base_addr + (ifmap_height-filter_height+1)*(ifmap_width-filter_width+1)*filter_num*element_unit;
 	new_space_addr = MAX(new_space_addr, addr_tmp);
 	if(DEBUG)
 		cout << "new_space_addr: " << new_space_addr << endl;
@@ -93,7 +96,7 @@ void software_request_generator::set_variable_config(int index)
 
 			new_space_addr += ofmap_width*ofmap_height*ofmap_channel*element_unit;
 		}
-		else if(layer_type==string("Gemm"))
+		else if(layer_type==string("Gemm") || layer_type==string("Dir_Gemm"))
 			new_space_addr += ifmap_height*filter_width*element_unit;
 	}
 	else if(get<12>(network_info[index])<=BOUNDARY_IFMAP_OFMAP_ARRAY)

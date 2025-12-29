@@ -115,7 +115,6 @@ void read_config(npu_accelerator *ng, string arch_file, string network_file, vec
 	cout << "systolic_array(width x height): " << ng->systolic_width << " x " << ng->systolic_height << endl;
 	cout << "sram_size(ifmap, filter, ofmap): " << ng->sram_ifmap_size << ", " << ng->sram_filter_size << ", " << ng->sram_ofmap_size << " Bytes" << endl;
 	cout << "tile_size(ifmap, filter, ofmap): " << ng->tile_ifmap_size << ", " << ng->tile_filter_size << ", " << ng->tile_ofmap_size << " Bytes" << endl;
-	cout << "dataflow: " << ng->dataflow_type << endl;
 	cout << "element_unit: " << ng->element_unit << " Bytes" << endl;
 	cout << "unit_compute: " << ng->unit_compute << endl;
 	cout << "2. network_parsing" << endl;
@@ -165,24 +164,21 @@ void read_arch_config(npu_accelerator *ng, string file_name)
 			ng->sram_ofmap_size = stoi(str_buf);
 			break;
 		case 13:
-			ng->dataflow_type = str_buf;
-			break;
-		case 15:
 			ng->element_unit = stoi(str_buf); // Bytes
 			break;
-		case 17:
+		case 15:
 			ng->cacheline_size = stoi(str_buf);
 			break;
-		case 19:
+		case 17:
 			ng->tile_ifmap_size = stoull(str_buf);
 			break;
-		case 21:
+		case 19:
 			ng->tile_filter_size = stoull(str_buf);
 			break;
-		case 23:
+		case 21:
 			ng->tile_ofmap_size = stoull(str_buf);
 			break;
-		case 25:
+		case 23:
 			ng->unit_compute = stoull(str_buf);
 			break;
 		}
