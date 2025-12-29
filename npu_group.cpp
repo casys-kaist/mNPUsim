@@ -307,6 +307,7 @@ void npu_group::mem_finished(int npu_idx)
 //--------------------------------------------------
 // name: npu_group::mem_sync
 // usage: synchronize memory_cycle and npu computation cycle
+// note: This function assumes that 'compute_cycle' is an (elapsed cycle for current tile computation) + (consecutive time before execution of current tile)
 //--------------------------------------------------
 
 void npu_group::mem_sync(int npu_idx)

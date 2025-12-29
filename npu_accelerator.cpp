@@ -59,6 +59,7 @@ void npu_accelerator::calcCycle()
 	if(DEBUG)
 		printf("input_local_cycle (compute_cycle %ld): %ld\n", compute_cycle, input_local_cycle);
 	cout << "(" << model_name << ", " << layer_name << ", " << layer_type << "): (compute_cycle " << compute_cycle << ")" << endl;
+	//printf("%ld cycle\n", input_local_cycle);
 	compute_cycle += (input_local_cycle + 1) * unit_compute;
 	compute_cycle += MAX(systolic_width, systolic_height) * unit_compute;
 	if(DEBUG)
